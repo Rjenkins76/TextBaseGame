@@ -61,14 +61,19 @@ def DrawHeader():
 
 ### DRAW GAME BOARD GRID ###
 def DrawGameBoard(Level):
+    global Game_Level
     if Level == 1:
         Floor1_Map.Draw_Cells2()
     if Level == 2:
         Floor2_Map.Draw_Cells2()
-    if Level == 3:
-        Rooms_MAP.Draw_Cells()
-    if Level == 4:
-        Rooms_MAP.Draw_Cells()
+    if Level == 3: # Floor 1 Rooms
+        Rooms_MAP.SetupCells()
+        Rooms_MAP.AssignItems(False)
+        room_number = Rooms_MAP.AssignRoom()
+        Rooms_MAP.Draw_Room(room_number)
+        Game_Level = 1
+    if Level == 4: # Floor 2 Rooms
+        Rooms_MAP.Draw_Room()
 
 ### DISPLAY DICE IMAGE AND ROLL NUMBER OF TIMES ###
 def DiceMove():
@@ -109,8 +114,8 @@ def PlayGame():
             if Game_Level == 1:
                 Floor1_Map.AssignItems(True) ### MOVES GHOST EACH TURN
             elif Game_Level == 2:
-                # Floor2_Map.AssignItems(True) ###FIXME - add to floor map
-                pass
+                Floor2_Map.AssignItems(True) ###FIXME - add to floor map
+                
         else:
             break
     Win_Lose.DisplayLOSEGame() ### DISPLAYS PLAYER DIE SCREEN AND REUTNS TO CMD PROMPT
