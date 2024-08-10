@@ -69,6 +69,7 @@ def DrawGameBoard(Level):
             Floor2_Map.SetupCells()
             Floor2_Map.Assign_Ghost(len(Ghost.Ghost_List))
             Floor2_Map.Assign_Bosses()
+            DrawStartPosition(2)
         Floor2_Map.Draw_Cells2()
     if Level == 3: # Floor 1 Rooms
         Rooms_MAP.SetupCells()
@@ -250,7 +251,7 @@ def Blockedcell():
     Moves_Made.clear()  ### CLEAR LIST FOR NEXT PLAYER TURN
 
 def Percentage():
-    if random.random() * 100 < 36:
+    if random.random() * 100 < 25:
         return True
     return False
 
@@ -274,7 +275,7 @@ def EncounterTrap():
             print(f"{Player.PlayerInfo.PlayerName} you escape unharmed!".center(208, " "))
             input("PRESS ENTER TO CONTINUE".rjust(115))
         elif (result == 5) or (result == 6) or (result == 7) or (result == 8) or (result == 9):
-            HPloss = random.randint(1, Player.PlayerInfo.PlayerCurrentHealth)
+            HPloss = random.randint(1, int(Player.PlayerInfo.PlayerCurrentHealth / 5))
             Player.PlayerInfo.PlayerCurrentHealth -= HPloss
             print(fg(255,25,25))
             print(f"You have lost {HPloss} HP and your current HP is {Player.PlayerInfo.PlayerCurrentHealth}.".center(208, " "))
