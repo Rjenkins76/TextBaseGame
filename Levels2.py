@@ -61,13 +61,13 @@ def DiceMove2():
     return test.diceroller(1) ### RETURN NUMBER DICE LANDS ON
 
 ### START GAME HERE
-def start():
-    global Game_Level
-    Floor1_Map.SetupCells() ### CREATE CELLS FOR LEVEL BASED ON WIDTH * HEIGHT
-    Floor1_Map.AssignItems(False) ### ASSIGN GHOST, FOOD, AND WEAPONS ON GRID
-    Game_Level = 1
-    DrawStartPosition(1) ### SET CELL THAT HAS PLAY TO START THE GAME
-    PlayGame() ### START GAME LOOP
+# def start():
+#     global Game_Level
+#     Floor1_Map.SetupCells() ### CREATE CELLS FOR LEVEL BASED ON WIDTH * HEIGHT
+#     Floor1_Map.AssignItems(False) ### ASSIGN GHOST, FOOD, AND WEAPONS ON GRID
+#     Game_Level = 1
+#     DrawStartPosition(1) ### SET CELL THAT HAS PLAY TO START THE GAME
+#     PlayGame() ### START GAME LOOP
 
 ### PUT PLAYER IMAGE IN BOTTOM CENTER CELL ###
 def DrawStartPosition(Level):
@@ -326,111 +326,123 @@ def MovePlayer(direction):
     CELL_DRAW[_PositionCell] = [CELLS[11][0], CELLS[11][1], CELLS[11][2]]
     Banner.Clear_Line()
     time.sleep(0.3)
+  
 
+### DRAW GAME BOARD GRID ###
+def DrawGameBoard(Level):
+    global Game_Level
+    if Level == 1:
+        Floor1_Map.Draw_Cells2()
+    if Level == 2:
+        if len(Floor2_Map.CELL_DRAW) == 0:
+            Floor2_Map.SetupCells()
+            Floor2_Map.Assign_Ghost(True)
+            Floor2_Map.Assign_Bosses()
+            DrawStartPosition(2)
+        Floor2_Map.Assign_Ghost(False)
+        Floor2_Map.Draw_Cells2()
+    if Level == 3: # Floor 1 Rooms
+        Rooms_MAP.SetupCells()
+        Rooms_MAP.AssignItems(False)
+        room_number = Rooms_MAP.AssignRoom()
+        Rooms_MAP.Draw_Room(room_number)
+        # Game_Level = 1
+    if Level == 4: # Floor 2 Rooms
+        Rooms_MAP.Draw_Room()
 
-# ### CHECK TO SEE IF PLAYER ENTERS ROOM OR ITEM IN EACH CELL PLAYER WAS IN ###
-# def Blockedcell():
-#     global Moves_Made, Game_Level
-#     fellintotrap = False
-#     ### IF PLAYER ENTERS A ROOM - ***FIXME***
-#     if Game_Level == 1:
-#         rooms = Floor1_Map.Room_List
-#     elif Game_Level == 2:
-#         rooms = Floor2_Map.Room_List
+### GAME LOOP Floor 1 - LOOP UNTIL PLAYER HEALTH REACHES 0 OR PLAYER BEATS MAIN BOSS ###
+def PlayGame():
+    while True:
+        if Player.PlayerInfo.PlayerCurrentHealth >= 0:
+            DrawHeader()
+            DrawGameBoard(Game_Level)
+            Banner.ChangeFOREcolor(255, 255, 0)
+            print("Using Number Pad Select your move.".center(208, " "))
+            result = DiceMove()  ### RETURNED NUMBER FOR PLAYER MOVES
+            Banner.Clear_Line(1)
+            PlayerMove(result)  ### COLLECTS PLAYER TURN MOVES
+            Check_if_Room()
+            # Blockedcell()  ### CHECKS TO SEE IF ANY MOVE ENCOUNTERED OBJECT
+            if Game_Level == 1:
+                Floor1_Map.AssignItems(True)  ### MOVES GHOST EACH TURN
+            elif Game_Level == 2:
+                Floor2_Map.Assign_Ghost(True)
+                Floor2_Map.Assign_Bosses()  
+            elif (Game_Level == 3) or (Game_Level == 4):
+                Rooms_MAP.AssignItems(True)
 
-#     for room in rooms:
-#         if _PositionCell == room:
-#             if Game_Level == 1:
-#                 Game_Level = 3
-#             elif Game_Level == 2:
-#                 Game_Level = 4
+        else:
+            break
 
-#         elif _PositionCell == 13:
-#             Game_Level = 2
+    Win_Lose.DisplayLOSEGame()  ### DISPLAYS PLAYER DIE SCREEN AND REUTNS TO CMD PROMPT
 
-#     else:
-#         for move in Moves_Made:
-#             ### IF A CELL CONTAINED A FOOD ITEM - ***FIXME***
-#             if (move[1] == '  🥖  '):
-#                 Banner.Clear_Line(int(12 * 3.9) + 12)
-#                 print("\n" * 15)
-#                 for i in FoodASCII.GenericFood:
-#                     print("".rjust(45) + i)
+def Check_if_Room():
+    global Game_Level
+    fellintotrap = False
+    ### IF PLAYER ENTERS A ROOM - ***FIXME***
+    if Game_Level == 1:
+        rooms = Floor1_Map.Room_List
+    elif Game_Level == 2:
+        rooms = Floor2_Map.Room_List
 
-#                 print((fg(255, 255, 0) + "                       1. EAT" + fg.rs).rjust(130))
-#                 print((fg(255, 255, 0) + "                       2. SAVE FOR LATER" + fg.rs).rjust(130))
-#                 option = input("Select Option: ".rjust(100))
-#                 print()
-#                 if option == "1":
-#                     FeedingGhost()
-#                     Player.PlayerInfo.AddHealth(10)
-#                     input()
-#                 elif option == "2":
-#                     print("PUTTING THIS IN BACKPACK")
-#                     Player.PlayerInfo.AddHealth(3)
-#             ### IF A CELL CONTAINED A GHOST - PLAYER SELECTS TO FEED OR FIGHT
-#             elif (move[1] == '  👻  '):
-#                 Banner.Clear_Line(int(12 * 3.9) + 12)
-#                 # SlidingGhost()
-#                 Banner.Clear_Line(4)
-#                 print("\n")
-#                 EnounterGhost(move)
-#                 pass
-#             ### IF A CELL CONTAINED A WEAPON - ***FIXME***
-#             elif (move[1] == '   ⚔️ '):
-#                 pass
-#             else: ### DOES PLAYER FIND A TRAP?
-#                 if not fellintotrap:
-#                     EncounterTrap()
-#                     fellintotrap = True
+    for room in rooms:
+        if _PositionCell == room:
+            if Game_Level == 1:
+                Game_Level = 3
+            elif Game_Level == 2:
+                Game_Level = 4
 
+        elif _PositionCell == 13:
+            Game_Level = 2    
 
+    Blockedcell()
 
-#     Moves_Made.clear()  ### CLEAR LIST FOR NEXT PLAYER TURN
+### CHECK TO SEE IF PLAYER ENTERS ROOM OR ITEM IN EACH CELL PLAYER WAS IN ###
+def Blockedcell():
+    global Moves_Made
+
+    for move in Moves_Made:
+        ### IF A CELL CONTAINED A FOOD ITEM - ***FIXME***
+        if (move[1] == '  🥖  '):
+            Banner.Clear_Line(int(12 * 3.9) + 12)
+            print("\n" * 15)
+            for i in FoodASCII.GenericFood:
+                print("".rjust(45) + i)
+
+            print((fg(255, 255, 0) + "                       1. EAT" + fg.rs).rjust(130))
+            print((fg(255, 255, 0) + "                       2. SAVE FOR LATER" + fg.rs).rjust(130))
+            option = input("Select Option: ".rjust(100))
+            print()
+            if option == "1":
+                FeedingGhost()
+                Player.PlayerInfo.AddHealth(10)
+                input()
+            elif option == "2":
+                print("PUTTING THIS IN BACKPACK")
+                Player.PlayerInfo.AddHealth(3)
+        ### IF A CELL CONTAINED A GHOST - PLAYER SELECTS TO FEED OR FIGHT
+        elif (move[1] == '  👻  '):
+            Banner.Clear_Line(int(12 * 3.9) + 12)
+            # SlidingGhost()
+            Banner.Clear_Line(4)
+            print("\n")
+            EnounterGhost(move)
+            pass
+        ### IF A CELL CONTAINED A WEAPON - ***FIXME***
+        elif (move[1] == '   ⚔️ '):
+            pass
+        ### DOES PLAYER FIND A TRAP?
+        else: 
+            if not fellintotrap:
+                EncounterTrap()
+                fellintotrap = True
     
+    Moves_Made.clear()  ### CLEAR LIST FOR NEXT PLAYER TURN
 
-# ### DRAW GAME BOARD GRID ###
-# def DrawGameBoard(Level):
-#     global Game_Level
-#     if Level == 1:
-#         Floor1_Map.Draw_Cells2()
-#     if Level == 2:
-#         if len(Floor2_Map.CELL_DRAW) == 0:
-#             Floor2_Map.SetupCells()
-#             Floor2_Map.Assign_Ghost(True)
-#             Floor2_Map.Assign_Bosses()
-#             DrawStartPosition(2)
-#         Floor2_Map.Assign_Ghost(False)
-#         Floor2_Map.Draw_Cells2()
-#     if Level == 3: # Floor 1 Rooms
-#         Rooms_MAP.SetupCells()
-#         Rooms_MAP.AssignItems(False)
-#         room_number = Rooms_MAP.AssignRoom()
-#         Rooms_MAP.Draw_Room(room_number)
-#         Game_Level = 1
-#     if Level == 4: # Floor 2 Rooms
-#         Rooms_MAP.Draw_Room()
 
-# ### GAME LOOP - LOOP UNTIL PLAYER HEALTH REACHES 0 OR PLAYER BEATS MAIN BOSS ###
-# def PlayGame():
-#     while True:
-#         if Player.PlayerInfo.PlayerCurrentHealth >= 0:
-#             DrawHeader()
-#             DrawGameBoard(Game_Level)
-#             Banner.ChangeFOREcolor(255, 255, 0)
-#             print("Using Number Pad Select your move.".center(208, " "))
-#             result = DiceMove()  ### RETURNED NUMBER FOR PLAYER MOVES
-#             Banner.Clear_Line(1)
-#             PlayerMove(result)  ### COLLECTS PLAYER TURN MOVES
-#             Blockedcell()  ### CHECKS TO SEE IF ANY MOVE ENCOUNTERED OBJECT
-#             if Game_Level == 1:
-#                 Floor1_Map.AssignItems(True)  ### MOVES GHOST EACH TURN
-#             elif Game_Level == 2:
-#                 pass  ###FIXME - add to floor map
 
-#         else:
-#             break
-#     Win_Lose.DisplayLOSEGame()  ### DISPLAYS PLAYER DIE SCREEN AND REUTNS TO CMD PROMPT
+
+
 
 
 

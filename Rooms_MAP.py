@@ -87,7 +87,7 @@ def SetupCells():
 
 def AssignItems(reassign):
     if reassign:
-        for _ghost in range(len(Ghost.Ghost_List)):
+        for _ghost in range(int(len(Ghost.Ghost_List)/4)):
             current = Ghost.Ghost_List[_ghost]
             current2 = current.location
             CELL_DRAW[current2] = [CELLS[1][0], CELLS[1][1], CELLS[1][2]]
@@ -96,14 +96,6 @@ def AssignItems(reassign):
             if CELL_DRAW[z][1] == "      ":
                 CELL_DRAW[z] = [CELLS[9][0], CELLS[9][1], CELLS[9][2]]
                 Ghost.Ghost_List[_ghost].location = z
-
-        # for _food in range(15):
-        #     z= random.randrange(1, len(CELL_DRAW))
-        #     test = CELLS[5][1]
-        #     if CELL_DRAW[z][1] == "      ":
-        #         CELL_DRAW[z] = [CELLS[5][0], test, CELLS[5][2]]
-
-
     else:
         for _ghost in range(int(len(Ghost.Ghost_List)/4)):
             print(int(len(Ghost.Ghost_List)/4))
