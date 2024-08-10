@@ -387,7 +387,47 @@ def MovePlayer(direction):
     Banner.Clear_Line()
     time.sleep(0.3)
 
+### DRAW GAME BOARD GRID ###
+def DrawGameBoard(Level):
+    global Game_Level
+    if Level == 1:
+        Floor1_Map.Draw_Cells2()
+    if Level == 2:
+        if len(Floor2_Map.CELL_DRAW) == 0:
+            Floor2_Map.SetupCells()
+            Floor2_Map.Assign_Ghost(len(Ghost.Ghost_List))
+            Floor2_Map.Assign_Bosses()
+            DrawStartPosition(2)
+        Floor2_Map.Draw_Cells2()
+    if Level == 3: # Floor 1 Rooms
+        Rooms_MAP.SetupCells()
+        Rooms_MAP.AssignItems(False)
+        room_number = Rooms_MAP.AssignRoom()
+        Rooms_MAP.Draw_Room(room_number)
+        Game_Level = 1
+    if Level == 4: # Floor 2 Rooms
+        Rooms_MAP.Draw_Room()
 
+### GAME LOOP - LOOP UNTIL PLAYER HEALTH REACHES 0 OR PLAYER BEATS MAIN BOSS ###
+def PlayGame():
+    while True:
+        if Player.PlayerInfo.PlayerCurrentHealth >= 0:
+            DrawHeader()
+            DrawGameBoard(Game_Level)
+            Banner.ChangeFOREcolor(255, 255, 0)
+            print("Using Number Pad Select your move.".center(208, " "))
+            result = DiceMove()  ### RETURNED NUMBER FOR PLAYER MOVES
+            Banner.Clear_Line(1)
+            PlayerMove(result)  ### COLLECTS PLAYER TURN MOVES
+            Blockedcell()  ### CHECKS TO SEE IF ANY MOVE ENCOUNTERED OBJECT
+            if Game_Level == 1:
+                Floor1_Map.AssignItems(True)  ### MOVES GHOST EACH TURN
+            elif Game_Level == 2:
+                pass  ###FIXME - add to floor map
+
+        else:
+            break
+    Win_Lose.DisplayLOSEGame()  ### DISPLAYS PLAYER DIE SCREEN AND REUTNS TO CMD PROMPT
 
 
 
