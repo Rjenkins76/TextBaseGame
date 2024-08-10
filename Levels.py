@@ -426,7 +426,7 @@ def start():
     Floor1_Map.SetupCells() ### CREATE CELLS FOR LEVEL BASED ON WIDTH * HEIGHT
     Floor1_Map.AssignItems(False) ### ASSIGN GHOST, FOOD, AND WEAPONS ON GRID
     Game_Level = 1
-    DrawStartPosition(1) ### SET CELL THAT HAS PLAY TO START THE GAME
+    DrawStartPosition(Game_Level) ### SET CELL THAT HAS PLAY TO START THE GAME
     PlayGame() ### START GAME LOOP
 
 
