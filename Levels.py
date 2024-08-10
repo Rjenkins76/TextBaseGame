@@ -198,9 +198,13 @@ def Blockedcell():
 
     for room in rooms:
         if _PositionCell == room:
-            Rooms.start()
+            if Game_Level == 1:
+                Game_Level = 3
+            elif Game_Level == 2:
+                Game_Level = 4
+
         elif _PositionCell == 13:
-            Floor2.start()
+            Game_Level = 2
 
     else:
         for move in Moves_Made:
