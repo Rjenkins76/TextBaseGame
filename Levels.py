@@ -65,6 +65,10 @@ def DrawGameBoard(Level):
     if Level == 1:
         Floor1_Map.Draw_Cells2()
     if Level == 2:
+        if len(Floor2_Map.CELL_DRAW) == 0:
+            Floor2_Map.SetupCells()
+            Floor2_Map.Assign_Ghost(len(Ghost.Ghost_List))
+            Floor2_Map.Assign_Bosses()
         Floor2_Map.Draw_Cells2()
     if Level == 3: # Floor 1 Rooms
         Rooms_MAP.SetupCells()
@@ -114,7 +118,7 @@ def PlayGame():
             if Game_Level == 1:
                 Floor1_Map.AssignItems(True) ### MOVES GHOST EACH TURN
             elif Game_Level == 2:
-                Floor2_Map.AssignItems(True) ###FIXME - add to floor map
+                pass ###FIXME - add to floor map
                 
         else:
             break
@@ -187,10 +191,9 @@ def MovePlayer(direction):
 
 ### CHECK TO SEE IF PLAYER ENTERS ROOM OR ITEM IN EACH CELL PLAYER WAS IN ###
 def Blockedcell():
-    global Moves_Made
+    global Moves_Made, Game_Level
     fellintotrap = False
     ### IF PLAYER ENTERS A ROOM - ***FIXME***
-
     if Game_Level == 1:
         rooms = Floor1_Map.Room_List
     elif Game_Level == 2:
@@ -418,8 +421,10 @@ def FeedingGhost():
 
 ### START GAME HERE
 def start():
+    global Game_Level
     Floor1_Map.SetupCells() ### CREATE CELLS FOR LEVEL BASED ON WIDTH * HEIGHT
     Floor1_Map.AssignItems(False) ### ASSIGN GHOST, FOOD, AND WEAPONS ON GRID
+    Game_Level = 1
     DrawStartPosition(1) ### SET CELL THAT HAS PLAY TO START THE GAME
     PlayGame() ### START GAME LOOP
 
