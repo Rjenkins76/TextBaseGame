@@ -61,13 +61,13 @@ def DiceMove2():
     return test.diceroller(1) ### RETURN NUMBER DICE LANDS ON
 
 ### START GAME HERE
-# def start():
-#     global Game_Level
-#     Floor1_Map.SetupCells() ### CREATE CELLS FOR LEVEL BASED ON WIDTH * HEIGHT
-#     Floor1_Map.AssignItems(False) ### ASSIGN GHOST, FOOD, AND WEAPONS ON GRID
-#     Game_Level = 1
-#     DrawStartPosition(1) ### SET CELL THAT HAS PLAY TO START THE GAME
-#     PlayGame() ### START GAME LOOP
+def start():
+    global Game_Level
+    Floor1_Map.SetupCells() ### CREATE CELLS FOR LEVEL BASED ON WIDTH * HEIGHT
+    Floor1_Map.AssignItems(False) ### ASSIGN GHOST, FOOD, AND WEAPONS ON GRID
+    Game_Level = 1
+    DrawStartPosition(1) ### SET CELL THAT HAS PLAY TO START THE GAME
+    PlayGame() ### START GAME LOOP
 
 ### PUT PLAYER IMAGE IN BOTTOM CENTER CELL ###
 def DrawStartPosition(Level):
@@ -144,8 +144,7 @@ def EnounterGhost(move):
     x, z = 0, 0  ### X = GHOST LINES, Z = STORY LINES
     story_length = len(story)
     Ghost_length = len(GhostASCII.printBasicGhost)
-    where_to_Start = int(
-        Ghost_length / story_length)  ### GET LINE TO START GHOST INFORMATION IN REFERENCE TO THE GHOST ASCII
+    where_to_Start = 0 if story_length == 0 else int(Ghost_length / story_length)  ### GET LINE TO START GHOST INFORMATION IN REFERENCE TO THE GHOST ASCII
     for i in GhostASCII.printBasicGhost:
         if z == 1:
             print(i.rjust(45) + f" YOU HAVE ENCOUNTERED THE GHOST OF {name}".center(150, " "))
@@ -365,11 +364,11 @@ def PlayGame():
             # Blockedcell()  ### CHECKS TO SEE IF ANY MOVE ENCOUNTERED OBJECT
             if Game_Level == 1:
                 Floor1_Map.AssignItems(True)  ### MOVES GHOST EACH TURN
-            elif Game_Level == 2:
-                Floor2_Map.Assign_Ghost(True)
-                Floor2_Map.Assign_Bosses()  
-            elif (Game_Level == 3) or (Game_Level == 4):
-                Rooms_MAP.AssignItems(True)
+            # elif Game_Level == 2:
+            #     Floor2_Map.Assign_Ghost(True)
+            #     Floor2_Map.Assign_Bosses()  
+            # elif (Game_Level == 3) or (Game_Level == 4):
+            #     Rooms_MAP.AssignItems(True)
 
         else:
             break
@@ -400,6 +399,7 @@ def Check_if_Room():
 ### CHECK TO SEE IF PLAYER ENTERS ROOM OR ITEM IN EACH CELL PLAYER WAS IN ###
 def Blockedcell():
     global Moves_Made
+    fellintotrap = False
 
     for move in Moves_Made:
         ### IF A CELL CONTAINED A FOOD ITEM - ***FIXME***

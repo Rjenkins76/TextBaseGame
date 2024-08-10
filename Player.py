@@ -16,7 +16,7 @@ class Player:
     def __init__(self,name):
         self.PlayerName = name
         self.PlayerMaxHealth = 250
-        self.PlayerCurrentHealth = 75
+        self.PlayerCurrentHealth = 125
         self.PlayerWeapons = self.StartWeapon()
         self.PlayerFood = FoodItems.SetupPlayerStartItems()
 

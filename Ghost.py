@@ -33,7 +33,7 @@ class Ghost1:
     def __init__(self,sex):
         if sex == "male":
             self.name = random.choice(namesMale)
-            namesMale.remove(self.name)
+            # namesMale.remove(self.name)
             story_info = self.Create_Ghost_Story(sex)
             self.story = story_info[0]
             self.story_lines = story_info[1]
@@ -45,7 +45,7 @@ class Ghost1:
 
         if sex == "female":
             self.name = random.choice(nameFemale)
-            nameFemale.remove(self.name)
+            # nameFemale.remove(self.name)
             story_info = self.Create_Ghost_Story(sex=sex)
             self.story = story_info[0]
             self.story_lines = story_info[1]
