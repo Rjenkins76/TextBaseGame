@@ -395,9 +395,10 @@ def DrawGameBoard(Level):
     if Level == 2:
         if len(Floor2_Map.CELL_DRAW) == 0:
             Floor2_Map.SetupCells()
-            Floor2_Map.Assign_Ghost(len(Ghost.Ghost_List))
+            Floor2_Map.Assign_Ghost(True)
             Floor2_Map.Assign_Bosses()
             DrawStartPosition(2)
+        Floor2_Map.Assign_Ghost(False)
         Floor2_Map.Draw_Cells2()
     if Level == 3: # Floor 1 Rooms
         Rooms_MAP.SetupCells()
