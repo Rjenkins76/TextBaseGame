@@ -4,7 +4,8 @@
     PROFESSOR: Ben Payeur, M.S, P.E   '''
 
 import random
-import Ghost, Banner
+import Banner
+from Ghost import Ghost_List
 from sty import fg, bg, ef, rs
 
 Width = 28
@@ -202,17 +203,17 @@ def Draw_Cells2():
 
     print("".ljust(justif) + "├─────────────────┴────────────┴────────────────┴─────────────────┴────────────┴────────────────┴─────────────────┴────────────┴────────────────┴─────────────────┴──────┘")
 
-def Assign_Ghost(reassign,ListGhost):
+def Assign_Ghost(reassign):
     if not reassign:
-        for _ghost in int(len(ListGhost)):
-            current = ListGhost[_ghost]
+        for _ghost in range (len(Ghost_List)):
+            current = Ghost_List[_ghost]
             current2 = current.location
             CELL_DRAW[current2] = [CELLS[1][0], CELLS[1][1], CELLS[1][2]]
-            ListGhost[_ghost].location = 0
+            Ghost_List[_ghost].location = 0
             z = random.randrange(1, len(CELL_DRAW))
             if CELL_DRAW[z][1] == "      ":
                 CELL_DRAW[z] = [CELLS[9][0], CELLS[9][1], CELLS[9][2]]
-                ListGhost[_ghost].location = z
+                Ghost_List[_ghost].location = z
         x = 0
         while x < 5:
             food_cell = random.choice(Walkable_Cells)
@@ -229,13 +230,11 @@ def Assign_Ghost(reassign,ListGhost):
             CELL_DRAW[weapon_cell][2] = CELLS[10][2]
             x += 1
     else:
-        test = (int(len(ListGhost)))
-        _ghost = 0
-        while _ghost < test:
+        for _ghost in range (len(Ghost_List)):
             z = random.choice(Walkable_Cells)
             if CELL_DRAW[z][1] == "      ":
                 CELL_DRAW[z] = [CELLS[9][0], CELLS[9][1], CELLS[9][2]]
-                Ghost.Ghost_List[_ghost].location = z
+                Ghost_List[_ghost].location = z
             _ghost += 1
 
 def Assign_Bosses():

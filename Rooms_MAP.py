@@ -5,7 +5,7 @@
 
 import random,Banner
 from Rooms_ASCII import ROOM_NAMES, ROOM_NUMBER
-import Ghost
+from Ghost import Ghost_List
 from sty import fg, bg, ef, rs
 
 WIDTH =  random.randint(4,12)
@@ -87,23 +87,23 @@ def SetupCells():
 
 def AssignItems(reassign):
     if reassign:
-        for _ghost in range(int(len(Ghost.Ghost_List)/4)):
-            current = Ghost.Ghost_List[_ghost]
+        for _ghost in range(int(len(Ghost_List)/4)):
+            current = Ghost_List[_ghost]
             current2 = current.location
             print(current2)
             CELL_DRAW[current2] = [CELLS[1][0], CELLS[1][1], CELLS[1][2]]
-            Ghost.Ghost_List[_ghost].location = 0
+            Ghost_List[_ghost].location = 0
             z = random.randrange(1, len(CELL_DRAW))
             if CELL_DRAW[z][1] == "      ":
                 CELL_DRAW[z] = [CELLS[9][0], CELLS[9][1], CELLS[9][2]]
-                Ghost.Ghost_List[_ghost].location = z
+                Ghost_List[_ghost].location = z
     else:
-        for _ghost in range(int(len(Ghost.Ghost_List)/4)):
-            print(int(len(Ghost.Ghost_List)/4))
+        for _ghost in range(int(len(Ghost_List)/4)):
+            print(int(len(Ghost_List)/4))
             z = random.randrange(1, len(CELL_DRAW))
             if CELL_DRAW[z][1] == "      ":
                 CELL_DRAW[z] = [CELLS[9][0], CELLS[9][1], CELLS[9][2]]
-                Ghost.Ghost_List[_ghost].location = z
+                Ghost_List[_ghost].location = z
 
         for _food in range(3):
             z = random.randrange(1, len(CELL_DRAW))

@@ -4,7 +4,8 @@
     PROFESSOR: Ben Payeur, M.S, P.E   '''
 
 import random
-import Banner, Ghost
+import Banner
+from Ghost import Ghost_List, SetupGhost
 from sty import fg, bg, ef, rs
 
 Width = 28
@@ -81,15 +82,15 @@ def SetupCells():
 
 def AssignItems(reassign):
     if reassign:
-        for _ghost in range(len(Ghost.Ghost_List)):
-            current = Ghost.Ghost_List[_ghost]
+        for _ghost in range(len(Ghost_List)):
+            current = Ghost_List[_ghost]
             current2 = current.location
             CELL_DRAW[current2] = [CELLS[1][0], CELLS[1][1], CELLS[1][2]]
-            Ghost.Ghost_List[_ghost].location = 0
+            Ghost_List[_ghost].location = 0
             z = random.randrange(1, len(CELL_DRAW))
             if CELL_DRAW[z][1] == "      ":
                 CELL_DRAW[z] = [CELLS[9][0], CELLS[9][1], CELLS[9][2]]
-                Ghost.Ghost_List[_ghost].location = z
+                Ghost_List[_ghost].location = z
 
         # for _food in range(15):
         #     z= random.randrange(1, len(CELL_DRAW))
@@ -99,13 +100,7 @@ def AssignItems(reassign):
 
         
     else:
-        Ghost.SetupGhost(15)
-        for _ghost in range(len(Ghost.Ghost_List)):
-            z = random.randrange(1, len(CELL_DRAW))
-            if CELL_DRAW[z][1] == "      ":
-                CELL_DRAW[z] = [CELLS[9][0], CELLS[9][1], CELLS[9][2]]
-                Ghost.Ghost_List[_ghost].location = z
-
+        SetupGhost(15)
         for _food in range(15):
             z= random.randrange(1, len(CELL_DRAW))
             test = CELLS[8][1]        
@@ -116,6 +111,12 @@ def AssignItems(reassign):
             z= random.randrange(1, len(CELL_DRAW))
             if CELL_DRAW[z][1] == "      ":
                 CELL_DRAW[z] = [CELLS[10][0], CELLS[10][1], CELLS[10][2]]
+
+        for _ghost in range(len(Ghost_List)):
+            z = random.randrange(1, len(CELL_DRAW))
+            if CELL_DRAW[z][1] == "      ":
+                CELL_DRAW[z] = [CELLS[9][0], CELLS[9][1], CELLS[9][2]]
+                Ghost_List[_ghost].location = z
 
 def Draw_Cells2():
     x, y, z, a = 0, 1, 48, 73

@@ -4,7 +4,8 @@
     PROFESSOR: Ben Payeur, M.S, P.E   '''
 
 import os, time, random, keyboard
-import Player,Banner, Dice, FoodASCII, Ghost, GhostASCII, Floor1_Map,Floor2_Map, Rooms_MAP, Win_Lose
+import Player,Banner, Dice, FoodASCII, GhostASCII, Floor1_Map,Floor2_Map, Rooms_MAP, Win_Lose
+from Ghost import Ghost_List
 from TrapASCII import TrapText
 from sty import fg, bg, ef, rs
 
@@ -132,7 +133,7 @@ def EnounterGhost(move):
     Hp = 0
     ghost_info = []
     ### SELECT CORRECT GHOST AND GET IT'S INFORMATION
-    for ghost in Ghost.Ghost_List:
+    for ghost in Ghost_List:
         if ghost.location == move[0]:
             story = ghost.story
             name = ghost.name
@@ -335,10 +336,10 @@ def DrawGameBoard(Level):
     if Level == 2:
         if len(Floor2_Map.CELL_DRAW) == 0:
             Floor2_Map.SetupCells()
-            Floor2_Map.Assign_Ghost(True, Ghost.Ghost_List)
+            Floor2_Map.Assign_Ghost(False)
             Floor2_Map.Assign_Bosses()
             DrawStartPosition(2)
-        # Floor2_Map.Assign_Ghost(False)
+        # Floor2_Map.Assign_Ghost(True)
         Floor2_Map.Draw_Cells2()
     if Level == 3: # Floor 1 Rooms
         Rooms_MAP.SetupCells()
