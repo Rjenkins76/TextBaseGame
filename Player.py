@@ -21,9 +21,13 @@ class Player:
         self.PlayerFood = FoodItems.SetupPlayerStartItems()
 
     def StartWeapon(self):
-        weapon = random.choice(Weapons.WEAPONLIST)
+        Avail_weapons = Weapons.WEAPONLIST
+        Avail_weapons.remove(['SPIRIT CATCHER','⚱️',50])
+        weapon1 = random.choice(Avail_weapons)
+        weapon2 = random.choice(Avail_weapons)
         test = []
-        test.append(weapon)
+        test.append(weapon1)
+        test.append(weapon2)
         return test
 
     def AddHealth(self,AmountGained):

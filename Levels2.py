@@ -128,6 +128,7 @@ def EncounterTrap():
 
 ### IF CELL CONTAINS A GHOST DRAW GHOST AND GIVE OPTION TO FEED OR FIGHT
 def EnounterGhost(move):
+    print("\n" * 10)
     story = ""
     name = ""
     Hp = 0
@@ -138,12 +139,14 @@ def EnounterGhost(move):
             story = ghost.story
             name = ghost.name
             Hp = ghost.Ghost_HP
+            story_Lines = ghost.story_lines
             ghost_info.append([name, story, Hp])
 
             ### DRAW GHOST AND STORY
     ### GIVE OPTION TO FIGHT OR FEED
     x, z = 0, 0  ### X = GHOST LINES, Z = STORY LINES
-    story_length = len(story)
+    story_length = len(story_Lines)
+    
     Ghost_length = len(GhostASCII.printBasicGhost)
     where_to_Start = 0 if story_length == 0 else int(Ghost_length / story_length)  ### GET LINE TO START GHOST INFORMATION IN REFERENCE TO THE GHOST ASCII
     for i in GhostASCII.printBasicGhost:
@@ -152,9 +155,9 @@ def EnounterGhost(move):
             z += 1
         elif z == 2:
             print(i.rjust(45) + f" HEALTH: {Hp}".center(150, " "))
-            z += 1
+            z += 2
         elif (z == where_to_Start) and (x < story_length):
-            print(i.rjust(45) + story[x].center(150, " "))
+            print(i.rjust(45) + story_Lines[x].center(150, " "))
             x += 1
             where_to_Start += 1
             z += 1
@@ -178,19 +181,30 @@ def EnounterGhost(move):
     else:
         EnounterGhost(move)  ### RESTART IF NOT ONE OF THE OPTIONS
 
+
+def GhostFight_Percentage(amount):
+    if random.random() * 100 < amount:
+        return True
+    return False
+
 ### DISPLAY GHOST FIGHT
 def FightingGhost(ghost_info):
     Banner.Clear_Line(int(12 * 3.9))
+
+    avail_Weapons = {}
     # region DRAW WEAPONS AVAILABLE
     print("\n" * 15 + fg(255, 255, 0))
     print("❚█══SELECT WEAPON══█❚".center(208, " "))
     print("\n\n")
     x = 1
     for W in Player.PlayerInfo.PlayerWeapons:
-        print((str(x) + ". " + str(W[1]) + " - " + str(W[0]) + " - " + str(W[2]) + " DAMAGE").center(208, " "))
+        avail_Weapons[x] = W
+        print((str(x) + ". " + str(W[1]) + " - " + str(W[0])).center(208, " "))
+        win_chance = W[2]
         print("\n")
         x += 1
     item = input("SELECT A WEAPON TO USE: ".rjust(115))
+    win_chance = avail_Weapons[int(item)][2]
     # endregion
 
     # region DRAW FIGHTING SEQUENCE
@@ -234,23 +248,21 @@ def FightingGhost(ghost_info):
 
     # region DISPLAY FIGHT RESULTS
     print("\n" * 2 + fg(255, 255, 0))
-    Ghost_Status = Percentage()
+    Ghost_Status = GhostFight_Percentage(win_chance)
     if Ghost_Status:
         print(fg(255, 255, 0) + "YOU HAVE BATTLED WITH THE GHOST....".center(208, " "))
         print(fg(255, 255, 0) + f"YOU HAVE DEFEATED THE GHOST !!!!!!!".center(208, " "))
-        Player.PlayerInfo.AddHealth(random.randint(15, 45))
-        print(fg(255, 255,
-                 0) + f"YOU HAVE GAINED HEALTH AND YOUR CURRENT HELTH IS: {Player.PlayerInfo.PlayerCurrentHealth}".center(
-            208, " ") + "\n\n")
+        amount = random.randint(25, 75)
+        Player.PlayerInfo.AddHealth(amount)
+        print(fg(255, 255,0) + f"YOU HAVE GAINED {amount} HP".center(208, " ") + "\n\n")
         input("PRESS ANY KEY TO CONTINUE...".rjust(120))
     else:
         print(fg(255, 255, 0) + "YOU HAVE BATTLED WITH THE GHOST.....".center(208, " "))
-        ghost_info[0][2] -= random.randint(0, 50)
+        ghost_info[0][2] -= random.randint(10, 75)
         print(fg(255, 255, 0) + f"YOU HAVE REDUCED THEIR HEALTH TO {ghost_info[0][2]}".center(208, " "))
-        Player.PlayerInfo.RemoveHealth(random.randint(0, 35))
-        print(fg(255, 255,
-                 0) + f"YOU HAVE LOST HEALTH AND YOUR CURRENT HELTH IS: {Player.PlayerInfo.PlayerCurrentHealth}".center(
-            208, " ") + "\n\n")
+        amount = random.randint(0, 50)
+        Player.PlayerInfo.RemoveHealth(amount)
+        print(fg(255, 255,0) + f"YOU HAVE LOST {amount} HP".center(208, " ") + "\n\n")
         input("PRESS ANY KEY TO CONTINUE...".rjust(120))
 
     # endregion
