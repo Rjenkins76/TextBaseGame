@@ -202,15 +202,17 @@ def Draw_Cells2():
 
     print("".ljust(justif) + "├─────────────────┴────────────┴────────────────┴─────────────────┴────────────┴────────────────┴─────────────────┴────────────┴────────────────┴─────────────────┴──────┘")
 
-def Assign_Ghost(reassign):
+def Assign_Ghost(reassign,ListGhost):
     if not reassign:
-        x = 0
-        while x < len(Ghost.Ghost_List):
-            ghost_cell = random.choice(Walkable_Cells)
-            CELL_DRAW[ghost_cell][0] = CELLS[9][0]
-            CELL_DRAW[ghost_cell][1] = CELLS[9][1]
-            CELL_DRAW[ghost_cell][2] = CELLS[9][2]
-            x += 1
+        for _ghost in int(len(ListGhost)):
+            current = ListGhost[_ghost]
+            current2 = current.location
+            CELL_DRAW[current2] = [CELLS[1][0], CELLS[1][1], CELLS[1][2]]
+            ListGhost[_ghost].location = 0
+            z = random.randrange(1, len(CELL_DRAW))
+            if CELL_DRAW[z][1] == "      ":
+                CELL_DRAW[z] = [CELLS[9][0], CELLS[9][1], CELLS[9][2]]
+                ListGhost[_ghost].location = z
         x = 0
         while x < 5:
             food_cell = random.choice(Walkable_Cells)
@@ -227,15 +229,14 @@ def Assign_Ghost(reassign):
             CELL_DRAW[weapon_cell][2] = CELLS[10][2]
             x += 1
     else:
-        for _ghost in range(len(Ghost.Ghost_List)):
-            current = Ghost.Ghost_List[_ghost]
-            current2 = current.location
-            CELL_DRAW[current2] = [CELLS[1][0], CELLS[1][1], CELLS[1][2]]
-            Ghost.Ghost_List[_ghost].location = 0
-            z = random.randrange(1, len(CELL_DRAW))
+        test = (int(len(ListGhost)))
+        _ghost = 0
+        while _ghost < test:
+            z = random.choice(Walkable_Cells)
             if CELL_DRAW[z][1] == "      ":
                 CELL_DRAW[z] = [CELLS[9][0], CELLS[9][1], CELLS[9][2]]
                 Ghost.Ghost_List[_ghost].location = z
+            _ghost += 1
 
 def Assign_Bosses():
     x = 1

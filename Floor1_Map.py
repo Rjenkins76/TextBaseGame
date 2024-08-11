@@ -99,20 +99,20 @@ def AssignItems(reassign):
 
         
     else:
-        Ghost.SetupGhost(8)
+        Ghost.SetupGhost(15)
         for _ghost in range(len(Ghost.Ghost_List)):
             z = random.randrange(1, len(CELL_DRAW))
             if CELL_DRAW[z][1] == "      ":
                 CELL_DRAW[z] = [CELLS[9][0], CELLS[9][1], CELLS[9][2]]
                 Ghost.Ghost_List[_ghost].location = z
 
-        for _food in range(7):
+        for _food in range(15):
             z= random.randrange(1, len(CELL_DRAW))
             test = CELLS[8][1]        
             if CELL_DRAW[z][1] == "      ":
                 CELL_DRAW[z] = [CELLS[8][0], test, CELLS[8][2]]
 
-        for _fWeapon in range(4):
+        for _fWeapon in range(10):
             z= random.randrange(1, len(CELL_DRAW))
             if CELL_DRAW[z][1] == "      ":
                 CELL_DRAW[z] = [CELLS[10][0], CELLS[10][1], CELLS[10][2]]
