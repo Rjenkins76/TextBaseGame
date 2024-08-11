@@ -272,40 +272,17 @@ def FightingBoss():
 
     # region DRAW FIGHTING SEQUENCE
     Banner.Clear_Line(int(12 * 3.9))
-    print("\n" * 30)
-    color = 255
-    while color > -5:
-        Banner.Clear_Line(len(GhostASCII.printFight) + 1)
-        print(fg.rgb_call(color, color, color))
-        for i in GhostASCII.printFight:
-            print(i.center(208, " "))
-
+    x = 0
+    y = 0
+    while x <= 20:
+        z = random.randint(0,145)
+        Banner.ClearScreen()
+        print("\n" * random.randint(0,45))
+        for i in GhostASCII.printBoss1Face:
+            print(" " * z + i)
+        
         time.sleep(0.1)
-        color -= 17
-
-    color = 0
-    Banner.Clear_Line(len(GhostASCII.printFight) + 1)
-    print("\n" * (30 - len(GhostASCII.printFight)))
-    while color < 255:
-        Banner.Clear_Line(len(GhostASCII.printFight2) + 1)
-        print(fg.rgb_call(color, color, color))
-        for i in GhostASCII.printFight2:
-            print(i.center(208, " "))
-
-        time.sleep(0.1)
-        color += 17
-
-    color = 255
-    Banner.Clear_Line(len(GhostASCII.printFight2))
-    print("\n" * (30 - len(GhostASCII.printFight2)))
-    while color > -5:
-        Banner.Clear_Line(len(GhostASCII.printFight) + 1)
-        print(fg.rgb_call(color, color, color))
-        for i in GhostASCII.printFight:
-            print(i.center(208, " "))
-
-        time.sleep(0.1)
-        color -= 17
+        x += 1
 
     # endregion
 
