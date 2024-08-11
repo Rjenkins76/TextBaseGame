@@ -206,10 +206,7 @@ def Draw_Cells2():
 def Assign_Ghost(reassign):
     if not reassign:
         for _ghost in range (len(Ghost_List)):
-            current = Ghost_List[_ghost]
-            current2 = current.location
-            CELL_DRAW[current2] = [CELLS[1][0], CELLS[1][1], CELLS[1][2]]
-            Ghost_List[_ghost].location = 0
+            
             z = random.randrange(1, len(CELL_DRAW))
             if CELL_DRAW[z][1] == "      ":
                 CELL_DRAW[z] = [CELLS[9][0], CELLS[9][1], CELLS[9][2]]
@@ -231,6 +228,10 @@ def Assign_Ghost(reassign):
             x += 1
     else:
         for _ghost in range (len(Ghost_List)):
+            current = Ghost_List[_ghost]
+            current2 = current.location
+            CELL_DRAW[current2] = [CELLS[1][0], CELLS[1][1], CELLS[1][2]]
+            Ghost_List[_ghost].location = 0
             z = random.choice(Walkable_Cells)
             if CELL_DRAW[z][1] == "      ":
                 CELL_DRAW[z] = [CELLS[9][0], CELLS[9][1], CELLS[9][2]]

@@ -267,6 +267,66 @@ def FightingGhost(ghost_info):
 
     # endregion
 
+### DISPLAY GHOST FIGHT
+def FightingBoss():
+
+    # region DRAW FIGHTING SEQUENCE
+    Banner.Clear_Line(int(12 * 3.9))
+    print("\n" * 30)
+    color = 255
+    while color > -5:
+        Banner.Clear_Line(len(GhostASCII.printFight) + 1)
+        print(fg.rgb_call(color, color, color))
+        for i in GhostASCII.printFight:
+            print(i.center(208, " "))
+
+        time.sleep(0.1)
+        color -= 17
+
+    color = 0
+    Banner.Clear_Line(len(GhostASCII.printFight) + 1)
+    print("\n" * (30 - len(GhostASCII.printFight)))
+    while color < 255:
+        Banner.Clear_Line(len(GhostASCII.printFight2) + 1)
+        print(fg.rgb_call(color, color, color))
+        for i in GhostASCII.printFight2:
+            print(i.center(208, " "))
+
+        time.sleep(0.1)
+        color += 17
+
+    color = 255
+    Banner.Clear_Line(len(GhostASCII.printFight2))
+    print("\n" * (30 - len(GhostASCII.printFight2)))
+    while color > -5:
+        Banner.Clear_Line(len(GhostASCII.printFight) + 1)
+        print(fg.rgb_call(color, color, color))
+        for i in GhostASCII.printFight:
+            print(i.center(208, " "))
+
+        time.sleep(0.1)
+        color -= 17
+
+    # endregion
+
+    # region DISPLAY FIGHT RESULTS
+    print("\n" * 2 + fg(255, 255, 0))
+    Ghost_Status = True
+    if Ghost_Status:
+        Win_Lose.DisplayWINGame()
+        quit()
+    else:
+        print(fg(255, 255, 0) + "YOU HAVE BATTLED WITH THE ALISTOR.....".center(208, " "))
+        print(fg(255, 255, 0) + f"AND LOST".center(208, " "))
+        amount = random.randint(int(Player.PlayerInfo.PlayerCurrentHealth / 2), Player.PlayerInfo.PlayerCurrentHealth)
+        Player.PlayerInfo.RemoveHealth(amount)
+        print(fg(255, 255,0) + f"YOU HAVE LOST {amount} HP".center(208, " ") + "\n\n")
+        input("PRESS ANY KEY TO CONTINUE...".rjust(120))
+        return False
+
+    # endregion
+
+
 ### DISPLAY FEEDING GHOST - FIXME - NEED TO WORK ON HP PORTION
 def FeedingGhost():
     Banner.ClearScreen()
@@ -351,7 +411,7 @@ def DrawGameBoard(Level):
             Floor2_Map.Assign_Ghost(False)
             Floor2_Map.Assign_Bosses()
             DrawStartPosition(2)
-        # Floor2_Map.Assign_Ghost(True)
+        Floor2_Map.Assign_Ghost(True)
         Floor2_Map.Draw_Cells2()
     if Level == 3: # Floor 1 Rooms
         Rooms_MAP.SetupCells()
@@ -374,7 +434,7 @@ def PlayGame():
             Banner.Clear_Line(1)
             PlayerMove(result)  ### COLLECTS PLAYER TURN MOVES
             Check_if_Room()
-            # Blockedcell()  ### CHECKS TO SEE IF ANY MOVE ENCOUNTERED OBJECT
+            # Blockedcell()  ### IS PART OF PREVIOUS COMMAND - CHECKS TO SEE IF ANY MOVE ENCOUNTERED OBJECT
             if Game_Level == 1:
                 Floor1_Map.AssignItems(True)  ### MOVES GHOST EACH TURN
             # elif Game_Level == 2:
@@ -442,8 +502,22 @@ def Blockedcell():
             EnounterGhost(move)
             pass
         ### IF A CELL CONTAINED A WEAPON - ***FIXME***
-        elif (move[1] == '   ⚔️ '):
-            pass
+        elif (move[1] == '  ⚔️  '):
+            print("YOU HAVE FOUND A WEAPON")
+            input()
+        elif (move[1] == '  😡  '):
+            DrawHeader()
+            Banner.ChangeFOREcolor(250, 100, 100)
+            print("YOU HAVE ENCOUNTERED ALISTOR THE MAIN BOSS")         
+            results = FightingBoss()
+            if results:
+                Win_Lose.DisplayWINGame()
+                quit()
+            else:
+                pass
+        elif (move[1] == '  👿  '):
+            print("YOU HAVE ENCOUNTERED ALISTOR'S HENCHMEN")
+            input()
         ### DOES PLAYER FIND A TRAP?
         else: 
             if not fellintotrap:
