@@ -4,7 +4,7 @@
     PROFESSOR: Ben Payeur, M.S, P.E   '''
 
 import os, time, random, keyboard
-import Player,Banner, Dice, FoodASCII, GhostASCII, Floor1_Map,Floor2_Map, Rooms_MAP, Win_Lose
+import Player,Banner, Dice, FoodItems, GhostASCII, Floor1_Map,Floor2_Map, Rooms_MAP, Win_Lose
 from Ghost import Ghost_List
 from TrapASCII import TrapText
 from sty import fg, bg, ef, rs
@@ -437,7 +437,7 @@ def PlayGame():
             if Game_Level == 3:
                 if _PositionCell == Exit_Cell:
                     Game_Level = 1
-                    for cell in Floor1_Map.CELL_DRAW:
+                    for cell in len(Floor1_Map.CELL_DRAW):
                         if Floor1_Map.CELL_DRAW[cell][0] == '   O  ':
                             _PositionCell == cell
             elif Game_Level == 4:
@@ -481,20 +481,22 @@ def Blockedcell():
         if (move[1] == '  🥖  '):
             Banner.Clear_Line(int(12 * 3.9) + 12)
             print("\n" * 15)
-            for i in FoodASCII.GenericFood:
+
+            fooditem = random.choice(FoodItems.FoodItemList)
+            for i in fooditem[5]:
                 print("".rjust(45) + i)
 
             print((fg(255, 255, 0) + "                       1. EAT" + fg.rs).rjust(130))
-            print((fg(255, 255, 0) + "                       2. SAVE FOR LATER" + fg.rs).rjust(130))
-            option = input("Select Option: ".rjust(100))
+            print((fg(53, 53, 53) + "                       2. SAVE FOR LATER" + fg.rs).rjust(130))
+            option = input("Select Option 1 only: ".rjust(100))
             print()
-            if option == "1":
-                FeedingGhost()
-                Player.PlayerInfo.AddHealth(10)
-                input()
-            elif option == "2":
-                print("PUTTING THIS IN BACKPACK")
-                Player.PlayerInfo.AddHealth(3)
+            # if option == "1":
+            Player.PlayerInfo.AddHealth(int(fooditem[3]))
+            #     input()
+            # elif option == "2":
+            #     print("PUTTING THIS IN BACKPACK")
+            #     Player.PlayerInfo.AddHealth(3)
+                
         ### IF A CELL CONTAINED A GHOST - PLAYER SELECTS TO FEED OR FIGHT
         elif (move[1] == '  👻  '):
             Banner.Clear_Line(int(12 * 3.9) + 12)
