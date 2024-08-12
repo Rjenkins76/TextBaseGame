@@ -90,7 +90,6 @@ def AssignItems(reassign):
         for _ghost in range(int(len(Ghost_List)/4)):
             current = Ghost_List[_ghost]
             current2 = current.location
-            print(current2)
             CELL_DRAW[current2] = [CELLS[1][0], CELLS[1][1], CELLS[1][2]]
             Ghost_List[_ghost].location = 0
             z = random.randrange(1, len(CELL_DRAW))
@@ -99,7 +98,6 @@ def AssignItems(reassign):
                 Ghost_List[_ghost].location = z
     else:
         for _ghost in range(int(len(Ghost_List)/4)):
-            print(int(len(Ghost_List)/4))
             z = random.randrange(1, len(CELL_DRAW))
             if CELL_DRAW[z][1] == "      ":
                 CELL_DRAW[z] = [CELLS[9][0], CELLS[9][1], CELLS[9][2]]

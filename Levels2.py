@@ -13,6 +13,7 @@ _PositionCell = 321 ### CURRENT PLAYER CELL NUMBER - START POSITION FOR THE GAME
 Moves_Made = [] ### EACH TURN LIST OF MOVES - CELL NUMBER AND ITEM IN CELL
 Game_Level = 1
 room_number = 0
+Exit_Cell = 0
 
 ### DRAW GAME LOGO AND STATUS BAR ###
 def DrawHeader():
@@ -73,7 +74,7 @@ def start():
 
 ### PUT PLAYER IMAGE IN BOTTOM CENTER CELL ###
 def DrawStartPosition(Level):
-    global _PositionCell
+    global _PositionCell, Exit_Cell
     if Level == 1: ### FLOOR 1 START POSITION = 321
         _PositionCell = 321
         Floor1_Map.CELL_DRAW[_PositionCell][0] = Floor1_Map.CELLS[11][0]
@@ -86,11 +87,13 @@ def DrawStartPosition(Level):
         Floor2_Map.CELL_DRAW[_PositionCell][2] = Floor2_Map.CELLS[11][2]
     elif Level == 3: ### FLOOR 1 ROOM START POSITION = ((WIDTH * HEIGHT) - (WIDTH / 2))
         _PositionCell = int((Rooms_MAP.WIDTH * Rooms_MAP.HEIGHT) - (Rooms_MAP.WIDTH / 2))
+        Exit_Cell = _PositionCell
         Rooms_MAP.CELL_DRAW[_PositionCell][0] = Rooms_MAP.CELLS[11][0]
         Rooms_MAP.CELL_DRAW[_PositionCell][1] = Rooms_MAP.CELLS[11][1]
         Rooms_MAP.CELL_DRAW[_PositionCell][2] = Rooms_MAP.CELLS[11][2]
     elif Level == 4: ### FLOOR 2 ROOM START POSITION = ((WIDTH * HEIGHT) - (WIDTH / 2)
         _PositionCell = int((Rooms_MAP.WIDTH * Rooms_MAP.HEIGHT) - (Rooms_MAP.WIDTH / 2))
+        Exit_Cell = _PositionCell
         Rooms_MAP.CELL_DRAW[_PositionCell][0] = Rooms_MAP.CELLS[11][0]
         Rooms_MAP.CELL_DRAW[_PositionCell][1] = Rooms_MAP.CELLS[11][1]
         Rooms_MAP.CELL_DRAW[_PositionCell][2] = Rooms_MAP.CELLS[11][2]
@@ -182,7 +185,6 @@ def EnounterGhost(move):
         FightingGhost(ghost_info)  ### CALL GHOST FIGHT SCRIPT
     else:
         EnounterGhost(move)  ### RESTART IF NOT ONE OF THE OPTIONS
-
 
 def GhostFight_Percentage(amount):
     if random.random() * 100 < amount:
@@ -305,7 +307,6 @@ def FightingBoss():
 
     # endregion
 
-
 ### DISPLAY FEEDING GHOST - FIXME - NEED TO WORK ON HP PORTION
 def FeedingGhost():
     Banner.ClearScreen()
@@ -362,7 +363,6 @@ def MovePlayer(direction):
         CELL_DRAW = Rooms_MAP.CELL_DRAW
         CELLS = Rooms_MAP.CELLS
 
-    print(_PositionCell)
     CELL_DRAW[_PositionCell] = [CELLS[1][0], CELLS[1][1], CELLS[1][2]]
 
     if(Game_Level == 1) or (Game_Level == 2):
@@ -389,10 +389,9 @@ def MovePlayer(direction):
     Banner.Clear_Line()
     time.sleep(0.3)
   
-
 ### DRAW GAME BOARD GRID ###
 def DrawGameBoard(Level):
-    global Game_Level,room_number
+    global Game_Level, room_number
     if Level == 1:
         Floor1_Map.Draw_Cells2()
     if Level == 2:
@@ -421,6 +420,7 @@ def DrawGameBoard(Level):
 
 ### GAME LOOP Floor 1 - LOOP UNTIL PLAYER HEALTH REACHES 0 OR PLAYER BEATS MAIN BOSS ###
 def PlayGame():
+    global Game_Level, _PositionCell
     while True:
         if Player.PlayerInfo.PlayerCurrentHealth >= 0:
             DrawHeader()
@@ -434,6 +434,15 @@ def PlayGame():
             # Blockedcell()  ### IS PART OF PREVIOUS COMMAND - CHECKS TO SEE IF ANY MOVE ENCOUNTERED OBJECT
             if Game_Level == 1:
                 Floor1_Map.AssignItems(True)  ### MOVES GHOST EACH TURN
+            if Game_Level == 3:
+                if _PositionCell == Exit_Cell:
+                    Game_Level = 1
+                    for cell in Floor1_Map.CELL_DRAW:
+                        if Floor1_Map.CELL_DRAW[cell][0] == '   O  ':
+                            _PositionCell == cell
+            elif Game_Level == 4:
+                if _PositionCell == Exit_Cell:
+                    Game_Level = 2
         else:
             break
 
