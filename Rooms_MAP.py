@@ -117,7 +117,7 @@ def AssignItems(reassign):
                 CELL_DRAW[z] = [CELLS[10][0], CELLS[10][1], CELLS[10][2]]
 
 def AssignRoom():
-    return random.randint(1,6)   
+    return random.randint(1,5)   
 
 def Draw_Room(room_number):
     x, y = 1, 1

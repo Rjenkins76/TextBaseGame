@@ -12,6 +12,7 @@ from sty import fg, bg, ef, rs
 _PositionCell = 321 ### CURRENT PLAYER CELL NUMBER - START POSITION FOR THE GAME
 Moves_Made = [] ### EACH TURN LIST OF MOVES - CELL NUMBER AND ITEM IN CELL
 Game_Level = 1
+room_number = 0
 
 ### DRAW GAME LOGO AND STATUS BAR ###
 def DrawHeader():
@@ -72,6 +73,7 @@ def start():
 
 ### PUT PLAYER IMAGE IN BOTTOM CENTER CELL ###
 def DrawStartPosition(Level):
+    global _PositionCell
     if Level == 1: ### FLOOR 1 START POSITION = 321
         _PositionCell = 321
         Floor1_Map.CELL_DRAW[_PositionCell][0] = Floor1_Map.CELLS[11][0]
@@ -83,15 +85,15 @@ def DrawStartPosition(Level):
         Floor2_Map.CELL_DRAW[_PositionCell][1] = Floor2_Map.CELLS[11][1]
         Floor2_Map.CELL_DRAW[_PositionCell][2] = Floor2_Map.CELLS[11][2]
     elif Level == 3: ### FLOOR 1 ROOM START POSITION = ((WIDTH * HEIGHT) - (WIDTH / 2))
-        _PositionCell = ((Rooms_MAP.WIDTH * Rooms_MAP.HEIGHT) - (Rooms_MAP.WIDTH / 2))
-        Rooms_MAP.CELL_DRAW[_PositionCell][0] = Rooms_MAP.CELLS[3][0]
-        Rooms_MAP.CELL_DRAW[_PositionCell][1] = Rooms_MAP.CELLS[3][1]
-        Rooms_MAP.CELL_DRAW[_PositionCell][2] = Rooms_MAP.CELLS[3][2]
+        _PositionCell = int((Rooms_MAP.WIDTH * Rooms_MAP.HEIGHT) - (Rooms_MAP.WIDTH / 2))
+        Rooms_MAP.CELL_DRAW[_PositionCell][0] = Rooms_MAP.CELLS[11][0]
+        Rooms_MAP.CELL_DRAW[_PositionCell][1] = Rooms_MAP.CELLS[11][1]
+        Rooms_MAP.CELL_DRAW[_PositionCell][2] = Rooms_MAP.CELLS[11][2]
     elif Level == 4: ### FLOOR 2 ROOM START POSITION = ((WIDTH * HEIGHT) - (WIDTH / 2)
-        _PositionCell = ((Rooms_MAP.WIDTH * Rooms_MAP.HEIGHT) - (Rooms_MAP.WIDTH / 2))
-        Rooms_MAP.CELL_DRAW[_PositionCell][0] = Rooms_MAP.CELLS[3][0]
-        Rooms_MAP.CELL_DRAW[_PositionCell][1] = Rooms_MAP.CELLS[3][1]
-        Rooms_MAP.CELL_DRAW[_PositionCell][2] = Rooms_MAP.CELLS[3][2]
+        _PositionCell = int((Rooms_MAP.WIDTH * Rooms_MAP.HEIGHT) - (Rooms_MAP.WIDTH / 2))
+        Rooms_MAP.CELL_DRAW[_PositionCell][0] = Rooms_MAP.CELLS[11][0]
+        Rooms_MAP.CELL_DRAW[_PositionCell][1] = Rooms_MAP.CELLS[11][1]
+        Rooms_MAP.CELL_DRAW[_PositionCell][2] = Rooms_MAP.CELLS[11][2]
 
 ### GET 25% OF THE TIME PLAYER FALLS INTO A TRAP ###
 def Percentage():
@@ -360,16 +362,27 @@ def MovePlayer(direction):
         CELL_DRAW = Rooms_MAP.CELL_DRAW
         CELLS = Rooms_MAP.CELLS
 
+    print(_PositionCell)
     CELL_DRAW[_PositionCell] = [CELLS[1][0], CELLS[1][1], CELLS[1][2]]
 
-    if direction == "UP":
-        _PositionCell -= 28
-    elif direction == "DOWN":
-        _PositionCell += 28
-    elif direction == "LEFT":
-        _PositionCell -= 1
-    elif direction == "RIGHT":
-        _PositionCell += 1
+    if(Game_Level == 1) or (Game_Level == 2):
+        if direction == "UP":
+            _PositionCell -= 28
+        elif direction == "DOWN":
+            _PositionCell += 28
+        elif direction == "LEFT":
+            _PositionCell -= 1
+        elif direction == "RIGHT":
+            _PositionCell += 1
+    elif(Game_Level == 3) or (Game_Level == 4):
+        if direction == "UP":
+            _PositionCell -= Rooms_MAP.WIDTH
+        elif direction == "DOWN":
+            _PositionCell += Rooms_MAP.WIDTH
+        elif direction == "LEFT":
+            _PositionCell -= 1
+        elif direction == "RIGHT":
+            _PositionCell += 1
 
     Moves_Made.append([_PositionCell, CELL_DRAW[_PositionCell][1]])
     CELL_DRAW[_PositionCell] = [CELLS[11][0], CELLS[11][1], CELLS[11][2]]
@@ -379,7 +392,7 @@ def MovePlayer(direction):
 
 ### DRAW GAME BOARD GRID ###
 def DrawGameBoard(Level):
-    global Game_Level
+    global Game_Level,room_number
     if Level == 1:
         Floor1_Map.Draw_Cells2()
     if Level == 2:
@@ -390,14 +403,21 @@ def DrawGameBoard(Level):
             DrawStartPosition(2)
         Floor2_Map.Assign_Ghost(True)
         Floor2_Map.Draw_Cells2()
-    if Level == 3: # Floor 1 Rooms
-        Rooms_MAP.SetupCells()
-        Rooms_MAP.AssignItems(False)
-        room_number = Rooms_MAP.AssignRoom()
+    if (Level == 3): # Floor 1 Rooms
+        if len(Rooms_MAP.CELL_DRAW) == 0:
+            Rooms_MAP.SetupCells()
+            Rooms_MAP.AssignItems(False)
+            room_number = Rooms_MAP.AssignRoom()
+            DrawStartPosition(3)
         Rooms_MAP.Draw_Room(room_number)
         # Game_Level = 1
     if Level == 4: # Floor 2 Rooms
-        Rooms_MAP.Draw_Room()
+        if len(Rooms_MAP.CELL_DRAW) == 0:
+            Rooms_MAP.SetupCells()
+            Rooms_MAP.AssignItems(False)
+            room_number = Rooms_MAP.AssignRoom()
+            DrawStartPosition(4)
+        Rooms_MAP.Draw_Room(room_number)
 
 ### GAME LOOP Floor 1 - LOOP UNTIL PLAYER HEALTH REACHES 0 OR PLAYER BEATS MAIN BOSS ###
 def PlayGame():
@@ -414,12 +434,6 @@ def PlayGame():
             # Blockedcell()  ### IS PART OF PREVIOUS COMMAND - CHECKS TO SEE IF ANY MOVE ENCOUNTERED OBJECT
             if Game_Level == 1:
                 Floor1_Map.AssignItems(True)  ### MOVES GHOST EACH TURN
-            # elif Game_Level == 2:
-            #     Floor2_Map.Assign_Ghost(True)
-            #     Floor2_Map.Assign_Bosses()  
-            # elif (Game_Level == 3) or (Game_Level == 4):
-            #     Rooms_MAP.AssignItems(True)
-
         else:
             break
 
@@ -433,16 +447,18 @@ def Check_if_Room():
         rooms = Floor1_Map.Room_List
     elif Game_Level == 2:
         rooms = Floor2_Map.Room_List
+    try:
+        for room in rooms:
+            if _PositionCell == room:
+                if Game_Level == 1:
+                    Game_Level = 3
+                elif Game_Level == 2:
+                    Game_Level = 4
 
-    for room in rooms:
-        if _PositionCell == room:
-            if Game_Level == 1:
-                Game_Level = 3
-            elif Game_Level == 2:
-                Game_Level = 4
-
-        elif _PositionCell == 13:
-            Game_Level = 2    
+            elif _PositionCell == 13:
+                Game_Level = 2    
+    except:
+        pass
 
     Blockedcell()
 
