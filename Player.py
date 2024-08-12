@@ -24,10 +24,10 @@ class Player:
         Avail_weapons = Weapons.WEAPONLIST
         Avail_weapons.remove(['SPIRIT CATCHER','⚱️',50])
         weapon1 = random.choice(Avail_weapons)
-        weapon2 = random.choice(Avail_weapons)
+        # weapon2 = random.choice(Avail_weapons)
         test = []
         test.append(weapon1)
-        test.append(weapon2)
+        # test.append(weapon2)
         return test
 
     def AddHealth(self,AmountGained):
@@ -38,7 +38,7 @@ class Player:
 
     def AddWeapon(self,FoundWeapon):
         if not FoundWeapon in PlayerInfo.PlayerWeapons:
-            self.PlayerWeapons[FoundWeapon] = 1
+            self.PlayerWeapons.append(FoundWeapon)
         else:
             self.PlayerWeapons[FoundWeapon] += 1
 

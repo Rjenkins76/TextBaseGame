@@ -4,7 +4,7 @@
     PROFESSOR: Ben Payeur, M.S, P.E   '''
 
 import os, time, random, keyboard
-import Player,Banner, Dice, FoodItems, GhostASCII, Floor1_Map,Floor2_Map, Rooms_MAP, Win_Lose
+import Player,Banner, Dice, FoodItems, Weapons, GhostASCII, Floor1_Map,Floor2_Map, Rooms_MAP, Win_Lose
 from Ghost import Ghost_List
 from TrapASCII import TrapText
 from sty import fg, bg, ef, rs
@@ -491,12 +491,7 @@ def Blockedcell():
             print((fg(53, 53, 53) + "2. SAVE FOR LATER".center(208," ") + fg.rs))
             option = input((fg(255, 255, 0) + "Select Option 1 only: " + fg.rs).rjust(135))
             print()
-            # if option == "1":
             Player.PlayerInfo.AddHealth(int(fooditem[3]))
-            #     input()
-            # elif option == "2":
-            #     print("PUTTING THIS IN BACKPACK")
-            #     Player.PlayerInfo.AddHealth(3)
                 
         ### IF A CELL CONTAINED A GHOST - PLAYER SELECTS TO FEED OR FIGHT
         elif (move[1] == '  👻  '):
@@ -508,8 +503,17 @@ def Blockedcell():
             pass
         ### IF A CELL CONTAINED A WEAPON - ***FIXME***
         elif (move[1] == '  ⚔️  '):
-            print("YOU HAVE FOUND A WEAPON")
-            input()
+            Banner.Clear_Line(int(12 * 3.9) + 12)          
+            print("\n" * 10)
+            Weaponitem = random.choice(Weapons.WEAPONLIST)
+            print(f"YOU FOUND A {Weaponitem[0]} !!!".center(208, " "))
+            print("\n" * 2)
+            for i in Weapons.Weapon:
+                print(i.center(208," "))
+            print("\n" * 3)
+            option = input((fg(255, 255, 0) + "PRESS ENTER TO CONTINUE ..." + fg.rs).rjust(135))
+            print()
+            Player.PlayerInfo.AddWeapon(Weaponitem)
         elif (move[1] == '  😡  '):
             DrawHeader()
             Banner.ChangeFOREcolor(250, 100, 100)
