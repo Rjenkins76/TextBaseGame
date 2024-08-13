@@ -271,7 +271,7 @@ def FightingGhost(ghost_info):
 
     # endregion
 
-### DISPLAY GHOST FIGHT
+### DISPLAY ALISTOR FIGHT
 def FightingBoss():
 
     # region DRAW FIGHTING SEQUENCE
@@ -306,13 +306,37 @@ def FightingBoss():
         return False
 
     # endregion
+### DISPLAY ALISTOR HENCHMEN FIGHT
+def FightingSubBoss():
+    # WinLoseFight = random.choice(True,False)
+    Banner.ClearScreen()
+    print("\n" * 7)
+    print("YOU HAVE ENCOUNTERED ONE OF ALISTORS HENCHMEN")
+    for i in GhostASCII.printBoss2Face:
+        print((fg(255,150,150) + i).center(208," "))
+    
+    input("PRESS ENTER TO SEE IF YOU DEFEAT THIS BOSS...".rjust(115))
 
 ### DISPLAY FEEDING GHOST 
 def FeedingGhost():
     Banner.ClearScreen()
+    x = 1
+    print("\n" * 10)
     for i in FoodASCII.NomNom:
-        print(i.center(208, " "))
-    input("PRESS ANY KEY TO CONTINUE".rjust(135))
+        if x <= 9:
+            print(fg(255, 145, 145) + i.center(208," "))
+            x += 1
+        elif (x > 9) and (x <= 18):
+            print(fg(145, 255, 145) + i.center(208," "))
+            x += 1
+        elif (x > 18) and (x <= 26):
+            print(fg(145, 145, 255) + i.center(208," "))
+            x += 1
+        else:
+            print(fg(145, 145, 255) + i.center(208," "))
+            print(fg.rs)
+    print("\n\n")
+    input("PRESS ANY KEY TO CONTINUE".rjust(115))
 
 ### COLLECTS PLAYER INPUT FOR SELECTED MOVES EACH TURN ###
 ### PLAYER CAN ALSO VIEW THEIR FOOD ITEMS AND WEAPONS  ###
@@ -349,7 +373,7 @@ def PlayerMove(num_Moves):
             if option.upper() == "NONE":
                 pass
             elif int(option) in itemslist:
-                confirm = input(f"CONFIRM THAT YOU WOULD LIKE TO EAT A {} : (Y/N)")
+                confirm = input("CONFIRM THAT YOU WOULD LIKE TO EAT A {} : (Y/N)")
                 if confirm.upper() == 'Y':
                     del Player.PlayerInfo.PlayerFood[x-1]
                 elif confirm.upper() == 'N':
@@ -419,7 +443,7 @@ def DrawGameBoard(Level):
             Floor2_Map.Assign_Ghost(False)
             Floor2_Map.Assign_Bosses()
             DrawStartPosition(2)
-        Floor2_Map.Assign_Ghost(True)
+        # Floor2_Map.Assign_Ghost(True)
         Floor2_Map.Draw_Cells2()
     if (Level == 3): # Floor 1 Rooms
         if len(Rooms_MAP.CELL_DRAW) == 0:
@@ -511,10 +535,25 @@ def Blockedcell():
             option = input((fg(255, 255, 0) + "Select Option 1 only: " + fg.rs).rjust(135))
             if option == '1':
                 Banner.Clear_Line(int(12 * 3.9) + 12)
+                print("\n" * 10)
+                x=1
                 for i in FoodASCII.NomNom:
-                    print(i.center(208," "))
+                    if x <= 9:
+                        print(fg(255, 145, 145) + i.center(208," "))
+                        x += 1
+                    elif (x > 9) and (x <= 18):
+                        print(fg(145, 255, 145) + i.center(208," "))
+                        x += 1
+                    elif (x > 18) and (x <= 26):
+                        print(fg(145, 145, 255) + i.center(208," "))
+                        x += 1
+                    else:
+                        print(fg(145, 145, 255) + i.center(208," "))
+                        print(fg.rs)
             Player.PlayerInfo.AddHealth(int(fooditem[3]))
-            del Player.PlayerInfo.PlayerFood[fooditem]
+            # del Player.PlayerInfo.PlayerFood[fooditem]
+            print("\n\n")
+            input("PRESS ANY KEY TO CONTINUE".rjust(115))
                 
         ### IF A CELL CONTAINED A GHOST - PLAYER SELECTS TO FEED OR FIGHT
         elif (move[1] == '  👻  '):
@@ -537,6 +576,7 @@ def Blockedcell():
             option = input((fg(255, 255, 0) + "PRESS ENTER TO CONTINUE ..." + fg.rs).rjust(135))
             print()
             Player.PlayerInfo.AddWeapon(Weaponitem)
+        ### IF A CELL CONTAINED ALISTOR MAIN BOSS
         elif (move[1] == '  😡  '):
             DrawHeader()
             Banner.ChangeFOREcolor(250, 100, 100)
@@ -547,9 +587,9 @@ def Blockedcell():
                 quit()
             else:
                 pass
+        ### IF A CELL CONTAINED A SUB BOSS
         elif (move[1] == '  👿  '):
-            print("YOU HAVE ENCOUNTERED ALISTOR'S HENCHMEN")
-            input()
+            FightingSubBoss()
         ### DOES PLAYER FIND A TRAP?
         else: 
             if not fellintotrap:
