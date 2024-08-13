@@ -4,8 +4,10 @@ PYTHON 3.12.3
 
 Final project for class
 
+(INTRO SCREEN)
 ![Screenshot 2024-08-09 165833](https://github.com/user-attachments/assets/14dbef4a-d393-4230-bf14-d8dfa4175d02)
 
+(FLOOR MAP EXAMPLE)
 ![Screenshot 2024-08-09 165941](https://github.com/user-attachments/assets/5bc249a9-4097-47cd-90dc-0660cb1675a7)
 
 #### ASCII art was sourced from the internet and not created by myself. ####
