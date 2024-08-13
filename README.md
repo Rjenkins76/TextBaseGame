@@ -11,6 +11,10 @@ Final project for class
 **** ASCII art was sourced from the internet and not created by myself. ****
 **** Professor gave permission to create a more adv version of the game ****
 
+#### KNOWN BUGS ####
+1. When coming back to map screen, player cell doesn't always show
+2. 
+
 **** MINIMUM REQUIREMENTS FOR ASSIGNMENT ****
 Directions
 In Project One, you designed pseudocode or flowcharts for the two main actions in the game: moving between rooms and gathering items. In this project, you will write the code for the full game based on your designs. You will also need to include some additional components beyond your original designs to help your game work as intended. You will develop all of your code in one Python (PY) file, titled “TextBasedGame.py.”
