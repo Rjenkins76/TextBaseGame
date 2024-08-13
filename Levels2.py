@@ -4,7 +4,7 @@
     PROFESSOR: Ben Payeur, M.S, P.E   '''
 
 import os, time, random, keyboard
-import Player,Banner, Dice, FoodASCII2, FoodItems, Weapons, GhostASCII, Floor1_Map,Floor2_Map, Rooms_MAP, Win_Lose
+import Player,Banner, Dice, FoodASCII, FoodItems, Weapons, GhostASCII, Floor1_Map,Floor2_Map, Rooms_MAP, Win_Lose
 from Ghost import Ghost_List
 from TrapASCII import TrapText
 from sty import fg, bg, ef, rs
@@ -310,7 +310,7 @@ def FightingBoss():
 ### DISPLAY FEEDING GHOST 
 def FeedingGhost():
     Banner.ClearScreen()
-    for i in FoodASCII2.NomNom:
+    for i in FoodASCII.NomNom:
         print(i.center(208, " "))
     input("PRESS ANY KEY TO CONTINUE".rjust(135))
 
@@ -511,7 +511,7 @@ def Blockedcell():
             option = input((fg(255, 255, 0) + "Select Option 1 only: " + fg.rs).rjust(135))
             if option == '1':
                 Banner.Clear_Line(int(12 * 3.9) + 12)
-                for i in FoodASCII2.NomNom:
+                for i in FoodASCII.NomNom:
                     print(i.center(208," "))
             Player.PlayerInfo.AddHealth(int(fooditem[3]))
             del Player.PlayerInfo.PlayerFood[fooditem]
