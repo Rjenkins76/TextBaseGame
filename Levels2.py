@@ -13,7 +13,7 @@ _PositionCell = 321 ### CURRENT PLAYER CELL NUMBER - START POSITION FOR THE GAME
 Moves_Made = [] ### EACH TURN LIST OF MOVES - CELL NUMBER AND ITEM IN CELL
 Game_Level = 1
 room_number = 0
-Exit_Cell = 0
+Exit_Cell = 1
 
 ### DRAW GAME LOGO AND STATUS BAR ###
 def DrawHeader():
