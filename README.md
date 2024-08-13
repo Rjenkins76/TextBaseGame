@@ -4,9 +4,34 @@ PYTHON 3.12.3
 
 Final project for class
 
+#### (INTRO SCREEN) ####
 ![Screenshot 2024-08-09 165833](https://github.com/user-attachments/assets/14dbef4a-d393-4230-bf14-d8dfa4175d02)
+![Screenshot 2024-08-13 135450](https://github.com/user-attachments/assets/60b9b6ad-193a-4b32-ab7e-ac9473759049)
 
+#### (FLOOR MAP EXAMPLE) ####
 ![Screenshot 2024-08-09 165941](https://github.com/user-attachments/assets/5bc249a9-4097-47cd-90dc-0660cb1675a7)
+
+#### (ENCOUNTER GHOST) ####
+![Screenshot 2024-08-13 135535](https://github.com/user-attachments/assets/716e76bb-8220-4c00-86d3-1cfaf8b46c47)
+
+#### (FOUND FOOD ITEM) ####
+![Screenshot 2024-08-13 135717](https://github.com/user-attachments/assets/8d27ac21-93df-4c24-9dc5-042c50ab32be)
+
+#### (GHOST AND PLAYER EATING FOOD) ####
+![Screenshot 2024-08-13 135615](https://github.com/user-attachments/assets/0ca2a650-b1dd-475b-93d9-7b1713d63bab)
+
+#### (GHOST FIGHT) ####
+![Screenshot 2024-08-13 135822](https://github.com/user-attachments/assets/fb90bc7c-debe-4b4d-8686-fece81f2f88f)
+
+#### (FOUND WEAPON) ####
+![Screenshot 2024-08-13 135912](https://github.com/user-attachments/assets/cfeea32d-8746-4758-b01b-5e95bd9459b1)
+
+#### (WALK INTO A TRAP) ####
+![Screenshot 2024-08-13 140006](https://github.com/user-attachments/assets/eaca1eaf-fd17-4546-a8a8-f29a9f2d180d)
+
+
+#### (WIN SCREEN) ####
+![Screenshot 2024-08-13 135332](https://github.com/user-attachments/assets/ddbf6a7f-4c7f-421f-9086-e3f496099e01)
 
 #### ASCII art was sourced from the internet and not created by myself. ####
 #### Professor gave permission to create a more adv version of the game ####
