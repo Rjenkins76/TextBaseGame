@@ -4,7 +4,7 @@
     PROFESSOR: Ben Payeur, M.S, P.E   '''
 
 import os, time, random, keyboard
-import Player,Banner, Dice, FoodItems, Weapons, GhostASCII, Floor1_Map,Floor2_Map, Rooms_MAP, Win_Lose
+import Player,Banner, Dice, FoodASCII2, FoodItems, Weapons, GhostASCII, Floor1_Map,Floor2_Map, Rooms_MAP, Win_Lose
 from Ghost import Ghost_List
 from TrapASCII import TrapText
 from sty import fg, bg, ef, rs
@@ -307,12 +307,12 @@ def FightingBoss():
 
     # endregion
 
-### DISPLAY FEEDING GHOST - FIXME - NEED TO WORK ON HP PORTION
+### DISPLAY FEEDING GHOST 
 def FeedingGhost():
     Banner.ClearScreen()
-    for i in GhostASCII.printGhostEating:
+    for i in FoodASCII2.NomNom:
         print(i.center(208, " "))
-    input()
+    input("PRESS ANY KEY TO CONTINUE".rjust(135))
 
 ### COLLECTS PLAYER INPUT FOR SELECTED MOVES EACH TURN ###
 ### PLAYER CAN ALSO VIEW THEIR FOOD ITEMS AND WEAPONS  ###
@@ -339,10 +339,29 @@ def PlayerMove(num_Moves):
             move += 1
             MovePlayer("RIGHT")
 
-        elif (MoveSelection.upper() == "F"):
-            print(f"LISTING YOUR FOOD ITEMS: {(Player.PlayerInfo.PlayerFood)}".center(208, " "))
-        elif (MoveSelection.upper() == "W"):
-            print(f"LISTING YOUR WEAPONS: {(Player.PlayerInfo.PlayerFood)}".center(208, " "))
+        elif (MoveSelection.upper() == "FOOD"): ### FIXME - needs to display food items and be able to select item to use
+            x = 1
+            print(f"LIST OF YOUR FOOD ITEMS:".center(208, " "))
+            for item in Player.PlayerInfo.PlayerFood:
+                print((str(x) + ": " + i).center(208," ")) 
+            
+            option = input("SELECT ITEM TO USE OR TYPE NONE LEAVE WITH OUT USING ITEM")
+            if option.upper() == "NONE":
+                pass
+            elif int(option) in itemslist:
+                confirm = input(f"CONFIRM THAT YOU WOULD LIKE TO EAT A {} : (Y/N)")
+                if confirm.upper() == 'Y':
+                    del Player.PlayerInfo.PlayerFood[x-1]
+                elif confirm.upper() == 'N':
+                    pass
+                else:
+                    pass 
+        elif (MoveSelection.upper() == "WEAPON"): 
+            x = 1
+            print(f"LIST OF YOUR WEAPONS:".center(208, " "))
+            for item in Player.PlayerInfo.PlayerWeapons:
+                print((str(x) + ": " + i).center(208," "))
+            input("PRESS ENTER TO CONTINUE".rjust(135))
 
         Banner.EndColor()
         Banner.Clear_Line()
@@ -451,7 +470,7 @@ def PlayGame():
 def Check_if_Room():
     global Game_Level
     fellintotrap = False
-    ### IF PLAYER ENTERS A ROOM - ***FIXME***
+    ### IF PLAYER ENTERS A ROOM
     if Game_Level == 1:
         rooms = Floor1_Map.Room_List
     elif Game_Level == 2:
@@ -490,8 +509,12 @@ def Blockedcell():
             print((fg(255, 255, 0) + "1. EAT".center(208," ") + fg.rs))
             print((fg(53, 53, 53) + "2. SAVE FOR LATER".center(208," ") + fg.rs))
             option = input((fg(255, 255, 0) + "Select Option 1 only: " + fg.rs).rjust(135))
-            print()
+            if option == '1':
+                Banner.Clear_Line(int(12 * 3.9) + 12)
+                for i in FoodASCII2.NomNom:
+                    print(i.center(208," "))
             Player.PlayerInfo.AddHealth(int(fooditem[3]))
+            del Player.PlayerInfo.PlayerFood[fooditem]
                 
         ### IF A CELL CONTAINED A GHOST - PLAYER SELECTS TO FEED OR FIGHT
         elif (move[1] == '  👻  '):
