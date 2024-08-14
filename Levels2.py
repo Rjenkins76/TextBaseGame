@@ -13,7 +13,7 @@ _PositionCell = 321 ### CURRENT PLAYER CELL NUMBER - START POSITION FOR THE GAME
 Moves_Made = [] ### EACH TURN LIST OF MOVES - CELL NUMBER AND ITEM IN CELL
 Game_Level = 1
 room_number = 0
-Exit_Cell = 1
+Exit_Cell = 0
 
 ### DRAW GAME LOGO AND STATUS BAR ###
 def DrawHeader():
@@ -73,18 +73,30 @@ def start():
     PlayGame() ### START GAME LOOP
 
 ### PUT PLAYER IMAGE IN BOTTOM CENTER CELL ###
-def DrawStartPosition(Level):
+def DrawStartPosition(Level, cellnumber = -1):
     global _PositionCell, Exit_Cell
     if Level == 1: ### FLOOR 1 START POSITION = 321
-        _PositionCell = 321
-        Floor1_Map.CELL_DRAW[_PositionCell][0] = Floor1_Map.CELLS[11][0]
-        Floor1_Map.CELL_DRAW[_PositionCell][1] = Floor1_Map.CELLS[11][1]
-        Floor1_Map.CELL_DRAW[_PositionCell][2] = Floor1_Map.CELLS[11][2]
+        if cellnumber == -1:
+            _PositionCell = 321
+            Floor1_Map.CELL_DRAW[_PositionCell][0] = Floor1_Map.CELLS[11][0]
+            Floor1_Map.CELL_DRAW[_PositionCell][1] = Floor1_Map.CELLS[11][1]
+            Floor1_Map.CELL_DRAW[_PositionCell][2] = Floor1_Map.CELLS[11][2]
+        else:
+            Floor1_Map.CELL_DRAW[cellnumber][0] = Floor1_Map.CELLS[11][0]
+            Floor1_Map.CELL_DRAW[cellnumber][1] = Floor1_Map.CELLS[11][1]
+            Floor1_Map.CELL_DRAW[cellnumber][2] = Floor1_Map.CELLS[11][2]
     elif Level == 2: ### FLOOR 2 START POSITION = 13
-        _PositionCell = 13
-        Floor2_Map.CELL_DRAW[_PositionCell][0] = Floor2_Map.CELLS[11][0]
-        Floor2_Map.CELL_DRAW[_PositionCell][1] = Floor2_Map.CELLS[11][1]
-        Floor2_Map.CELL_DRAW[_PositionCell][2] = Floor2_Map.CELLS[11][2]
+        if cellnumber == -1:
+            _PositionCell = 13
+            Floor2_Map.CELL_DRAW[_PositionCell][0] = Floor2_Map.CELLS[11][0]
+            Floor2_Map.CELL_DRAW[_PositionCell][1] = Floor2_Map.CELLS[11][1]
+            Floor2_Map.CELL_DRAW[_PositionCell][2] = Floor2_Map.CELLS[11][2]
+        else:
+            _PositionCell = 13
+            print(_PositionCell)
+            Floor2_Map.CELL_DRAW[_PositionCell][0] = Floor2_Map.CELLS[11][0]
+            Floor2_Map.CELL_DRAW[_PositionCell][1] = Floor2_Map.CELLS[11][1]
+            Floor2_Map.CELL_DRAW[_PositionCell][2] = Floor2_Map.CELLS[11][2]
     elif Level == 3: ### FLOOR 1 ROOM START POSITION = ((WIDTH * HEIGHT) - (WIDTH / 2))
         _PositionCell = int((Rooms_MAP.WIDTH * Rooms_MAP.HEIGHT) - (Rooms_MAP.WIDTH / 2))
         Exit_Cell = _PositionCell
@@ -292,12 +304,20 @@ def FightingBoss():
 
     # region DISPLAY FIGHT RESULTS
     print("\n" * 2 + fg(255, 255, 0))
-    Ghost_Status = True
+    print("ROLL THE DICE TO SEE IF YOU CAN DEFEAT ALISTOR")
+    result = DiceMove()
+    
+    if (result == 1) or (result == 3) or (result == 5):
+        Ghost_Status = True
+        input ("YOU ROLLED A {}, THAT MEANS YOU WON AND DEFEATED THE HENCHMEN.... PRESS ENTER TO RETURN TO THE GAME".rjust(95))
+    else:
+        Ghost_Status = False
+        input ("YOU ROLLED A {}, THAT MEANS YOU LOST.... PRESS ENTER TO RETURN TO THE GAME AND TRY AGAIN".rjust(95))
     if Ghost_Status:
         Win_Lose.DisplayWINGame()
         quit()
     else:
-        print(fg(255, 255, 0) + "YOU HAVE BATTLED WITH THE ALISTOR.....".center(208, " "))
+        print(fg(255, 255, 0) + "YOU HAVE BATTLED WITH ALISTOR.....".center(208, " "))
         print(fg(255, 255, 0) + f"AND LOST".center(208, " "))
         amount = random.randint(int(Player.PlayerInfo.PlayerCurrentHealth / 2), Player.PlayerInfo.PlayerCurrentHealth)
         Player.PlayerInfo.RemoveHealth(amount)
@@ -315,7 +335,41 @@ def FightingSubBoss():
     for i in GhostASCII.printBoss2Face:
         print((fg(255,150,150) + i).center(208," "))
     
-    input("PRESS ENTER TO SEE IF YOU DEFEAT THIS BOSS...".rjust(115))
+    input("PRESS ENTER TO ROLL THE DICE TO SEE IF YOU DEFEAT THIS BOSS...".rjust(104))
+
+    # region DISPLAY FIGHT RESULTS
+    print("\n"+ fg(255, 255, 0))
+
+    result = DiceMove()
+    if (result == 1) or (result == 3) or (result == 5):
+        Ghost_Status = True
+    else:
+        Ghost_Status = False
+
+    if Ghost_Status:
+        Banner.ClearScreen()
+        print(fg(100,255,100))
+        print("\n" * 5)
+        for i in Win_Lose.printWin:
+            print(i.center(208," "))
+        print("\n" * 5)
+        print(250,150,150)
+        for i in GhostASCII.printBoss1Face:
+            print(i.center(208," "))
+        print("\n" * 4 + fg.rs)
+        print("YOU HAVE GAINED MAX HP !!!".center(208," "))
+        input("PRESS ANY KEY TO CONTINUE...".rjust(120))
+
+    else:
+        print(fg(255, 255, 0) + "YOU HAVE BATTLED WITH THE HENCHMEN OF ALISTOR.....".center(208, " "))
+        print(fg(255, 255, 0) + f"AND LOST".center(208, " "))
+        amount = random.randint(int(Player.PlayerInfo.PlayerCurrentHealth / 4), int(Player.PlayerInfo.PlayerCurrentHealth/2))
+        Player.PlayerInfo.RemoveHealth(amount)
+        print(fg(255, 255,0) + f"YOU HAVE LOST {amount} HP".center(208, " ") + "\n\n")
+        input("PRESS ANY KEY TO CONTINUE...".rjust(120))
+        return False
+
+    # endregion
 
 ### DISPLAY FEEDING GHOST 
 def FeedingGhost():
@@ -467,6 +521,7 @@ def PlayGame():
     while True:
         if Player.PlayerInfo.PlayerCurrentHealth >= 0:
             DrawHeader()
+            # DrawStartPosition(Game_Level, _PositionCell)
             DrawGameBoard(Game_Level)
             Banner.ChangeFOREcolor(255, 255, 0)
             print("Using Number Pad Select your move.".center(208, " "))
@@ -486,6 +541,9 @@ def PlayGame():
             elif Game_Level == 4:
                 if _PositionCell == Exit_Cell:
                     Game_Level = 2
+                    for cell in len(Floor2_Map.CELL_DRAW):
+                        if Floor2_Map.CELL_DRAW[cell][0] == '   O  ':
+                            _PositionCell == cell
         else:
             break
 
