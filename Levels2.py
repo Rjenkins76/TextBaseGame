@@ -100,6 +100,7 @@ def DrawStartPosition(Level, cellnumber = -1):
     elif Level == 3: ### FLOOR 1 ROOM START POSITION = ((WIDTH * HEIGHT) - (WIDTH / 2))
         _PositionCell = int((Rooms_MAP.WIDTH * Rooms_MAP.HEIGHT) - (Rooms_MAP.WIDTH / 2))
         Exit_Cell = _PositionCell
+        print(_PositionCell, len(Rooms_MAP.CELL_DRAW))
         Rooms_MAP.CELL_DRAW[_PositionCell][0] = Rooms_MAP.CELLS[11][0]
         Rooms_MAP.CELL_DRAW[_PositionCell][1] = Rooms_MAP.CELLS[11][1]
         Rooms_MAP.CELL_DRAW[_PositionCell][2] = Rooms_MAP.CELLS[11][2]
@@ -421,7 +422,7 @@ def PlayerMove(num_Moves):
             x = 1
             print(f"LIST OF YOUR FOOD ITEMS:".center(208, " "))
             for item in Player.PlayerInfo.PlayerFood:
-                print((str(x) + ": " + i).center(208," ")) 
+                print((str(x) + ": " + item).center(208," ")) 
             
             option = input("SELECT ITEM TO USE OR TYPE NONE LEAVE WITH OUT USING ITEM")
             if option.upper() == "NONE":
@@ -520,8 +521,7 @@ def PlayGame():
     global Game_Level, _PositionCell
     while True:
         if Player.PlayerInfo.PlayerCurrentHealth >= 0:
-            DrawHeader()
-            # DrawStartPosition(Game_Level, _PositionCell)
+            DrawHeader()        
             DrawGameBoard(Game_Level)
             Banner.ChangeFOREcolor(255, 255, 0)
             print("Using Number Pad Select your move.".center(208, " "))
@@ -532,18 +532,7 @@ def PlayGame():
             # Blockedcell()  ### IS PART OF PREVIOUS COMMAND - CHECKS TO SEE IF ANY MOVE ENCOUNTERED OBJECT
             if Game_Level == 1:
                 Floor1_Map.AssignItems(True)  ### MOVES GHOST EACH TURN
-            if Game_Level == 3:
-                if _PositionCell == Exit_Cell:
-                    Game_Level = 1
-                    for cell in len(Floor1_Map.CELL_DRAW):
-                        if Floor1_Map.CELL_DRAW[cell][0] == '   O  ':
-                            _PositionCell == cell
-            elif Game_Level == 4:
-                if _PositionCell == Exit_Cell:
-                    Game_Level = 2
-                    for cell in len(Floor2_Map.CELL_DRAW):
-                        if Floor2_Map.CELL_DRAW[cell][0] == '   O  ':
-                            _PositionCell == cell
+
         else:
             break
 
@@ -553,6 +542,7 @@ def Check_if_Room():
     global Game_Level
     fellintotrap = False
     ### IF PLAYER ENTERS A ROOM
+    
     if Game_Level == 1:
         rooms = Floor1_Map.Room_List
     elif Game_Level == 2:
@@ -611,8 +601,7 @@ def Blockedcell():
             Player.PlayerInfo.AddHealth(int(fooditem[3]))
             # del Player.PlayerInfo.PlayerFood[fooditem]
             print("\n\n")
-            input("PRESS ANY KEY TO CONTINUE".rjust(115))
-                
+            input("PRESS ANY KEY TO CONTINUE".rjust(115))                
         ### IF A CELL CONTAINED A GHOST - PLAYER SELECTS TO FEED OR FIGHT
         elif (move[1] == '  👻  '):
             Banner.Clear_Line(int(12 * 3.9) + 12)

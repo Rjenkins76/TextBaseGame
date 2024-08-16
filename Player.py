@@ -40,7 +40,7 @@ class Player:
         if not FoundWeapon in PlayerInfo.PlayerWeapons:
             self.PlayerWeapons.append(FoundWeapon)
         else:
-            self.PlayerWeapons[FoundWeapon] += 1
+            self.PlayerWeapons.append(FoundWeapon)
 
     def RemoveWeapon(self,LostWeapon):
         self.PlayerWeapons.pop(LostWeapon)
