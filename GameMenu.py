@@ -4,7 +4,7 @@
     PROFESSOR: Ben Payeur, M.S, P.E   '''
 
 import os
-import Banner, Player, Levels2
+import Banner, Player, Level3
 
 PlayerASCII = ( r"                  __....._             ",
                 r"                ,', ,-_  `'.           ",
@@ -70,7 +70,7 @@ def GameSetupOptions(selected_option):
 
         # Banner.Clear_Line(10)
         # print((Player.display_health_bar() + f"  # FOOD ITEMS: {len(Player.PlayerInfo.PlayerFood)}     WEAPONS: {len(Player.PlayerInfo.PlayerWeapons)}").center(208, " ")) # SHOWS INITIAL HEALTH BAR 
-        Levels2.start() # SEND TO START OF GAME AT THE FIRST FLOOR
+        Level3.start() # SEND TO START OF GAME AT THE FIRST FLOOR
     elif selected_option == 9: # EXIT THE GAME AND TAKE OUT OF FULLSCREEN MODE
         Banner.EndColor()
         os.system('cls')

@@ -91,13 +91,6 @@ def AssignItems(reassign):
             if CELL_DRAW[z][1] == "      ":
                 CELL_DRAW[z] = [CELLS[9][0], CELLS[9][1], CELLS[9][2]]
                 Ghost_List[_ghost].location = z
-
-        # for _food in range(15):
-        #     z= random.randrange(1, len(CELL_DRAW))
-        #     test = CELLS[5][1]        
-        #     if CELL_DRAW[z][1] == "      ":
-        #         CELL_DRAW[z] = [CELLS[5][0], test, CELLS[5][2]]
-
         
     else:
         SetupGhost(15)
