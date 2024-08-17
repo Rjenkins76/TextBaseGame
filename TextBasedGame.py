@@ -13,9 +13,9 @@ from sty import fg, bg, ef, rs
 def Mbox(title, text, style):
     return ctypes.windll.user32.MessageBoxW(0, text, title, style)
 
-# Mbox('GHOST BE GONE', 'Please run game with the following setup:\n\n1. Windows Command Prompt\n2. Fullscreen - (columns=209, lines=51)\n3. Using fonts:\n          "Cascadia Mono" Size: 12                    \n                    OR\n          "Consolas" Size 12', 0)
+Mbox('GHOST BE GONE', 'Please run game with the following setup:\n\n1. Windows Command Prompt\n2. Fullscreen - (columns=209, lines=51)\n3. Using fonts:\n          "Cascadia Mono" Size: 11                    \n                    OR\n          "Consolas" Size 12', 0)
 #
-# keyboard.press('f11')
+keyboard.press('f11')
 
 def ClearScreen():
     os.system('cls')
