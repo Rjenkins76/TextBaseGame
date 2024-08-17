@@ -203,9 +203,9 @@ def Draw_Cells2():
 
     print("".ljust(justif) + "├─────────────────┴────────────┴────────────────┴─────────────────┴────────────┴────────────────┴─────────────────┴────────────┴────────────────┴─────────────────┴──────┘")
 
-def Assign_Ghost(reassign):
+def Assign_Ghost(reassign, GhostList):
     if not reassign:
-        for _ghost in range (len(Ghost_List)):
+        for _ghost in range (len(GhostList)):
             
             z = random.randrange(1, len(CELL_DRAW))
             if CELL_DRAW[z][1] == "      ":

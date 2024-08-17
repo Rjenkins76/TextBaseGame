@@ -97,8 +97,11 @@ def EnounterGhost(move):
             ### DRAW GHOST AND STORY
     ### GIVE OPTION TO FIGHT OR FEED
     x, z = 0, 0  ### X = GHOST LINES, Z = STORY LINES
-    print(len(story_length))
-    story_length = 0 if len(story_Lines) < 1 else len(story_Lines)
+    try:
+        story_length = len(story_Lines)
+    except Exception as e:
+        print(e)
+        input()
     
     Ghost_length = len(GhostASCII.printBasicGhost)
     where_to_Start = 0 if story_length == 0 else int(Ghost_length / story_length)  ### GET LINE TO START GHOST INFORMATION IN REFERENCE TO THE GHOST ASCII
@@ -612,7 +615,7 @@ def GetPlayerStartPosition(Level,cellnumber):
             Floor1_Map.Draw_Cells2() # DRAW GAME BOARD
     elif Game_Level == 2:
         if len(Floor2_Map.CELL_DRAW) > 0:
-            Floor1_Map.AssignItems(True) ### ASSIGN GHOST, FOOD, AND WEAPONS ON GRID
+            Floor2_Map.Assign_Ghost(True,Floor1_Map.Ghost_List) ### ASSIGN GHOST, FOOD, AND WEAPONS ON GRID
             # Draw Player START Position
             Floor2_Map.CELL_DRAW[_PositionCell][0] = Floor2_Map.CELLS[11][0]
             Floor2_Map.CELL_DRAW[_PositionCell][1] = Floor2_Map.CELLS[11][1]
@@ -621,7 +624,7 @@ def GetPlayerStartPosition(Level,cellnumber):
         elif len(Floor2_Map.CELL_DRAW) == 0:
             _PositionCell = 13
             Floor2_Map.SetupCells()
-            Floor2_Map.Assign_Ghost(False)
+            Floor2_Map.Assign_Ghost(False,Floor1_Map.Ghost_List)
             Floor2_Map.Assign_Bosses()
             # Draw Player START Position
             Floor2_Map.CELL_DRAW[_PositionCell][0] = Floor2_Map.CELLS[11][0]
