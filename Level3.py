@@ -81,6 +81,7 @@ def EncounterTrap():
 def EnounterGhost(move):
     print("\n" * 10)
     story = ""
+    story_Lines = []
     name = ""
     Hp = 0
     ghost_info = []
@@ -96,7 +97,8 @@ def EnounterGhost(move):
             ### DRAW GHOST AND STORY
     ### GIVE OPTION TO FIGHT OR FEED
     x, z = 0, 0  ### X = GHOST LINES, Z = STORY LINES
-    story_length = len(story_Lines)
+    print(len(story_length))
+    story_length = 0 if len(story_Lines) < 1 else len(story_Lines)
     
     Ghost_length = len(GhostASCII.printBasicGhost)
     where_to_Start = 0 if story_length == 0 else int(Ghost_length / story_length)  ### GET LINE TO START GHOST INFORMATION IN REFERENCE TO THE GHOST ASCII
@@ -290,6 +292,7 @@ def FightingSubBoss():
             print(i.center(208," "))
         print("\n" * 4 + fg.rs)
         print("YOU HAVE GAINED MAX HP !!!".center(208," "))
+        Player.PlayerInfo.AddHealth(Player.PlayerInfo.PlayerMaxHealth - Player.PlayerInfo.PlayerCurrentHealth)
         input("PRESS ANY KEY TO CONTINUE...".rjust(120))
 
     else:
@@ -419,7 +422,6 @@ def MovePlayer(direction):
     if (Game_Level == 3) or (Game_Level == 4):
         CELL_DRAW = Rooms_MAP.CELL_DRAW
         CELLS = Rooms_MAP.CELLS
-        print(len(CELL_DRAW),_PositionCell)
 
     CELL_DRAW[_PositionCell] = [CELLS[1][0], CELLS[1][1], CELLS[1][2]]
 
@@ -459,7 +461,7 @@ def Check_if_Room():
     if Game_Level == 1:
         rooms = Floor1_Map.Room_List
     elif Game_Level == 2:
-        rooms = Floor2_Map.Room_List
+        rooms = Floor2_Map.Room_Doors
     try:
         for room in rooms:
             if _PositionCell == room:
@@ -477,7 +479,7 @@ def Check_if_Room():
 
 ### CHECK TO SEE IF PLAYER ENTERS ROOM OR ITEM IN EACH CELL PLAYER WAS IN ###
 def Blockedcell():
-    global Moves_Made
+    global Moves_Made, Game_Level, _PositionCell
     fellintotrap = False
 
     for move in Moves_Made:
@@ -555,7 +557,18 @@ def Blockedcell():
             if not fellintotrap:
                 EncounterTrap()
                 fellintotrap = True
-    
+    if(Game_Level == 3):
+        if (_PositionCell == Exit_Cell) and not (Exit_Cell == 0):
+            Game_Level = 1
+            _PositionCell = Leaving_Cell
+    elif(Game_Level == 4):
+        if (_PositionCell == Exit_Cell) and not (Exit_Cell == 0):
+            Game_Level = 2
+            _PositionCell = Leaving_Cell
+    elif (Game_Level == 2):
+        if (_PositionCell == 13) and not (Exit_Cell == 0):
+            Game_Level = 1
+            _PositionCell = 13
     Moves_Made.clear()  ### CLEAR LIST FOR NEXT PLAYER TURN
 #endregion
 

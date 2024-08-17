@@ -81,6 +81,7 @@ def SetupCells():
         CELL_DRAW.append([CELLS[1][0], CELLS[1][1], CELLS[1][2]])
 
 def AssignItems(reassign):
+    global CELL_DRAW
     if reassign:
         for _ghost in range(len(Ghost_List)):
             current = Ghost_List[_ghost]
@@ -91,6 +92,21 @@ def AssignItems(reassign):
             if CELL_DRAW[z][1] == "      ":
                 CELL_DRAW[z] = [CELLS[9][0], CELLS[9][1], CELLS[9][2]]
                 Ghost_List[_ghost].location = z
+        x = 0
+        for cell in CELL_DRAW:           
+            if (cell[1] == '  🥖  ') or cell[1] == '  ⚔️  ':
+                CELL_DRAW[x][1] = CELLS[1][1]
+            x +=1
+        for _food in range(20):
+            z= random.randrange(1, len(CELL_DRAW))
+            test = CELLS[8][1]        
+            if CELL_DRAW[z][1] == "      ":
+                CELL_DRAW[z] = [CELLS[8][0], test, CELLS[8][2]]
+
+        for _fWeapon in range(10):
+            z= random.randrange(1, len(CELL_DRAW))
+            if CELL_DRAW[z][1] == "      ":
+                CELL_DRAW[z] = [CELLS[10][0], CELLS[10][1], CELLS[10][2]]
         
     else:
         SetupGhost(15)
